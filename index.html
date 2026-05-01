@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Falconia &mdash; Property Data Processing &amp; Research Services</title>
+<meta name="description" content="Falconia is a federal Canadian corporation providing property data processing and research services in compliance with the Personal Information Protection and Electronic Documents Act (PIPEDA).">
+<meta name="robots" content="index, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://falconia.ca/">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #334155;
+    background: #FFFFFF;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: #1E40AF; text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: #1E3A8A; }
+  ol, ul { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  p { margin: 0 0 14px 0; }
+  h1, h2, h3 { letter-spacing: -0.01em; color: #0F172A; margin: 0; }
+  ::selection { background: #DBEAFE; color: #0F172A; }
+  @media (max-width: 720px) {
+    .fal-page, .fal-header-inner, .fal-footer-inner { padding-left: 24px !important; padding-right: 24px !important; }
+    .fal-nav { gap: 12px !important; }
+    .fal-jurisdiction { display: none !important; }
+  }
+  @media print {
+    .fal-no-print { display: none !important; }
+    body { font-size: 11pt; color: #000; }
+    a { color: #000; text-decoration: none; }
+    .fal-section { page-break-inside: auto; border: none !important; background: #fff !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script>
+(function () {
+  var h = React.createElement;
+
+  var COLORS = {
+    primary:     '#0F172A',
+    bodyText:    '#334155',
+    secondary:   '#64748B',
+    background:  '#FFFFFF',
+    surface:     '#F8FAFC',
+    border:      '#E2E8F0',
+    accent:      '#1E40AF',
+    accentHover: '#1E3A8A',
+    headerMuted: '#CBD5E1',
+    headerFaint: '#94A3B8'
+  };
+
+  var EFFECTIVE_DATE = 'May 1, 2026';
+  var VERSION = '2026.05.01';
+  var PRIVACY_EMAIL = 'aqpropertyserviceswpg@gmail.com';
+
+  var S = {
+    page: { maxWidth: '780px', margin: '0 auto', padding: '0 40px' },
+
+    header: {
+      position: 'sticky', top: 0, zIndex: 50,
+      background: COLORS.primary, color: '#FFFFFF',
+      borderBottom: '1px solid #1E293B'
+    },
+    headerInner: {
+      maxWidth: '780px', margin: '0 auto', padding: '0 40px',
+      height: '56px', display: 'flex', alignItems: 'center',
+      justifyContent: 'space-between', gap: '20px'
+    },
+    wordmark: {
+      fontSize: '15px', fontWeight: 700, letterSpacing: '0.04em',
+      color: '#FFFFFF', textDecoration: 'none', textTransform: 'uppercase'
+    },
+    nav: { display: 'flex', gap: '20px', alignItems: 'center' },
+    navLink: {
+      color: COLORS.headerMuted, textDecoration: 'none',
+      fontSize: '12.5px', fontWeight: 500, letterSpacing: '0.02em'
+    },
+    jurisdiction: {
+      fontSize: '10.5px', color: COLORS.headerFaint,
+      letterSpacing: '0.08em', textTransform: 'uppercase',
+      whiteSpace: 'nowrap', borderLeft: '1px solid #334155',
+      paddingLeft: '16px'
+    },
+
+    hero: { padding: '56px 0 40px', borderBottom: '1px solid ' + COLORS.border },
+    heroEyebrow: {
+      fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em',
+      textTransform: 'uppercase', color: COLORS.secondary, marginBottom: '12px'
+    },
+    heroTitle: { fontSize: '26px', fontWeight: 700, color: COLORS.primary, marginBottom: '10px' },
+    heroSub: { fontSize: '15px', color: COLORS.bodyText, marginBottom: '20px', maxWidth: '640px' },
+    heroMeta: {
+      fontSize: '12px', color: COLORS.secondary,
+      letterSpacing: '0.02em', display: 'flex', flexWrap: 'wrap', gap: '16px'
+    },
+    heroMetaItem: { display: 'inline-block' },
+
+    section: { padding: '56px 0', borderBottom: '1px solid ' + COLORS.border, scrollMarginTop: '64px' },
+    sectionAlt: { background: COLORS.surface },
+
+    sectionEyebrow: {
+      fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em',
+      textTransform: 'uppercase', color: COLORS.secondary, marginBottom: '8px'
+    },
+    h1: { fontSize: '24px', fontWeight: 700, color: COLORS.primary, marginBottom: '6px' },
+    sectionMeta: { fontSize: '12px', color: COLORS.secondary, marginBottom: '20px' },
+
+    h2: { fontSize: '17px', fontWeight: 700, color: COLORS.primary, marginTop: '36px', marginBottom: '12px' },
+    h3: { fontSize: '14px', fontWeight: 700, color: COLORS.primary, marginTop: '20px', marginBottom: '8px' },
+
+    toc: {
+      background: '#FFFFFF', border: '1px solid ' + COLORS.border,
+      padding: '18px 22px', margin: '20px 0 28px'
+    },
+    tocTitle: {
+      fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em',
+      textTransform: 'uppercase', color: COLORS.primary, marginBottom: '10px'
+    },
+    tocList: { listStyle: 'none', padding: 0, margin: 0, columns: 2, columnGap: '24px' },
+    tocItem: { fontSize: '12.5px', lineHeight: 1.9, breakInside: 'avoid' },
+    tocNum: { display: 'inline-block', minWidth: '24px', color: COLORS.secondary },
+
+    clauseNum: { color: COLORS.secondary, fontWeight: 600, marginRight: '6px' },
+
+    defList: { margin: '12px 0 16px', padding: 0, listStyle: 'none' },
+    defItem: { marginBottom: '10px', paddingLeft: '0' },
+    defTerm: { fontWeight: 700, color: COLORS.primary },
+
+    table: { width: '100%', borderCollapse: 'collapse', fontSize: '13px', margin: '16px 0' },
+    th: {
+      textAlign: 'left', padding: '10px 12px',
+      borderBottom: '2px solid ' + COLORS.border, background: COLORS.surface,
+      fontWeight: 700, color: COLORS.primary, fontSize: '12.5px',
+      letterSpacing: '0.02em'
+    },
+    td: { padding: '10px 12px', borderBottom: '1px solid ' + COLORS.border, verticalAlign: 'top' },
+
+    flow: {
+      background: '#0F172A', color: '#E2E8F0',
+      border: '1px solid #1E293B', padding: '20px 22px', margin: '18px 0',
+      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+      fontSize: '12px', lineHeight: 1.9, whiteSpace: 'pre-wrap', overflowX: 'auto'
+    },
+
+    callout: {
+      borderLeft: '3px solid ' + COLORS.accent,
+      background: COLORS.surface, padding: '14px 18px', margin: '16px 0',
+      fontSize: '13px', color: COLORS.bodyText
+    },
+
+    crossref: {
+      fontSize: '12px', color: COLORS.secondary,
+      fontStyle: 'italic', marginTop: '8px'
+    },
+
+    badgeRow: { display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '16px' },
+    badge: {
+      display: 'inline-block', padding: '4px 10px',
+      border: '1px solid ' + COLORS.border, background: '#FFFFFF',
+      fontSize: '11px', fontWeight: 600, letterSpacing: '0.04em',
+      textTransform: 'uppercase', color: COLORS.primary, borderRadius: '2px'
+    },
+
+    footer: { background: COLORS.primary, color: COLORS.headerMuted, padding: '40px 0', fontSize: '12px', lineHeight: 1.85 },
+    footerInner: { maxWidth: '780px', margin: '0 auto', padding: '0 40px' },
+    footerRow: { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' },
+    footerCol: { minWidth: '200px' },
+    footerHead: { color: '#FFFFFF', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' },
+    footerLink: { color: COLORS.headerMuted, textDecoration: 'none' },
+    footerFine: { marginTop: '28px', paddingTop: '20px', borderTop: '1px solid #1E293B', color: COLORS.headerFaint, fontSize: '11px' }
+  };
+
+  // ----- Header -----
+  function Header() {
+    return h('header', { style: S.header, className: 'fal-no-print' },
+      h('div', { style: S.headerInner, className: 'fal-header-inner' },
+        h('a', { href: '#top', style: S.wordmark }, 'Falconia'),
+        h('nav', { style: S.nav, className: 'fal-nav' },
+          h('a', { href: '#terms', style: S.navLink }, 'Terms of Service'),
+          h('a', { href: '#privacy', style: S.navLink }, 'Privacy Policy'),
+          h('a', { href: '#data-processing', style: S.navLink }, 'Data Processing')
+        ),
+        h('span', { style: S.jurisdiction, className: 'fal-jurisdiction' }, 'Canada · PIPEDA')
+      )
+    );
+  }
+
+  // ----- Hero -----
+  function Hero() {
+    return h('section', { id: 'top', style: S.hero },
+      h('div', { style: S.page, className: 'fal-page' },
+        h('div', { style: S.heroEyebrow }, 'Falconia, Federal Corporation — Canada'),
+        h('h1', { style: S.heroTitle }, 'Property data processing and research services.'),
+        h('p', { style: S.heroSub },
+          'Falconia operates as an independent data processor and research service provider. ',
+          'This site provides the explicit disclosure layer required under the ',
+          'Personal Information Protection and Electronic Documents Act (PIPEDA), ',
+          'including the ', h('a', { href: '#terms' }, 'Terms of Service'), ', ',
+          h('a', { href: '#privacy' }, 'Privacy Policy'), ', and ',
+          h('a', { href: '#data-processing' }, 'Data Processing description'), ' below.'
+        ),
+        h('div', { style: S.heroMeta },
+          h('span', { style: S.heroMetaItem }, 'Effective: ' + EFFECTIVE_DATE),
+          h('span', { style: S.heroMetaItem }, 'Version ' + VERSION),
+          h('span', { style: S.heroMetaItem }, 'Governing Law: Manitoba, Canada')
+        ),
+        h('div', { style: S.badgeRow },
+          h('span', { style: S.badge }, 'Federal Corporation'),
+          h('span', { style: S.badge }, 'PIPEDA Compliant'),
+          h('span', { style: S.badge }, 'Manitoba Choice of Law'),
+          h('span', { style: S.badge }, 'No-Outreach Buyer Clause')
+        )
+      )
+    );
+  }
+
+  // ----- TOC helper -----
+  function Toc(title, items) {
+    return h('aside', { style: S.toc },
+      h('div', { style: S.tocTitle }, title),
+      h('ol', { style: S.tocList },
+        items.map(function (it) {
+          return h('li', { key: it[0], style: S.tocItem },
+            h('span', { style: S.tocNum }, it[0]),
+            h('a', { href: '#' + it[2] }, it[1])
+          );
+        })
+      )
+    );
+  }
+
+  // ----- Section helper -----
+  function Section(props, children) {
+    var style = Object.assign({}, S.section, props.alt ? S.sectionAlt : {});
+    return h('section', { id: props.id, style: style, className: 'fal-section' },
+      h('div', { style: S.page, className: 'fal-page' }, children)
+    );
+  }
+
+  // ----- Clause helper -----
+  function Clause(num, text) {
+    return h('p', null,
+      h('span', { style: S.clauseNum }, num),
+      text
+    );
+  }
+
+  // ============================================================
+  // TERMS OF SERVICE
+  // ============================================================
+  function TermsSection() {
+    var toc = [
+      ['1.',  'Definitions',                          'tos-1'],
+      ['2.',  'Data Processing Services',             'tos-2'],
+      ['3.',  'Data Product Tiers',                   'tos-3'],
+      ['4.',  'Permitted Uses',                       'tos-4'],
+      ['5.',  'No-Outreach Clause',                   'tos-5'],
+      ['6.',  'Buyer Obligations',                    'tos-6'],
+      ['7.',  'Data Retention',                       'tos-7'],
+      ['8.',  'Limitation of Liability',              'tos-8'],
+      ['9.',  'Governing Law and Jurisdiction',       'tos-9'],
+      ['10.', 'Contact and Privacy Officer',          'tos-10']
+    ];
+
+    return Section({ id: 'terms' }, [
+      h('div', { key: 'eb',   style: S.sectionEyebrow }, 'Document I'),
+      h('h1', { key: 'h1',   style: S.h1 }, 'Terms of Service'),
+      h('div', { key: 'meta', style: S.sectionMeta },
+        'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION + ' · Supersedes all prior versions.'
+      ),
+      h('p', { key: 'pre' },
+        'These Terms of Service (the “Terms”) govern access to and use of the data processing, ',
+        'aggregation, licensing, and research services provided by Falconia (the “Services”). ',
+        'By accessing the Services, by entering into a written data licensing agreement with Falconia, ',
+        'or by receiving any Property Record (as defined in §1.3), the recipient (the “Buyer”) ',
+        'agrees to be bound by these Terms together with the ', h('a', { href: '#privacy' }, 'Privacy Policy'),
+        ' and ', h('a', { href: '#data-processing' }, 'Data Processing'),
+        ' description published on this site, each of which is incorporated herein by reference.'
+      ),
+      Toc('Table of Contents', toc),
+
+      // 1. DEFINITIONS
+      h('h2', { key: 'h-1', id: 'tos-1', style: S.h2 }, '1. Definitions'),
+      h('p', { key: 'p-1' },
+        'In these Terms, the ', h('a', { href: '#privacy' }, 'Privacy Policy'),
+        ', and the ', h('a', { href: '#data-processing' }, 'Data Processing'),
+        ' description, the following capitalized terms shall have the meanings set out below. ',
+        'Defined terms appear capitalized throughout the Site and shall be interpreted consistently across all three documents.'
+      ),
+      h('ul', { key: 'def', style: S.defList }, [
+        h('li', { key: 'd1',  style: S.defItem }, h('span', { style: S.defTerm }, '1.1 “Falconia” '), 'means Falconia, a corporation incorporated under the federal laws of Canada, with operations conducted from the Province of Manitoba, acting in its capacity as data processor, aggregator, and research service provider.'),
+        h('li', { key: 'd2',  style: S.defItem }, h('span', { style: S.defTerm }, '1.2 “AQ” '), 'means AQ Property Services Winnipeg, the upstream residential service provider that obtains primary Consent (as defined in §1.11) from Owners (as defined in §1.10) at the point of service booking and that performs the on-Property service visits during which Source Material (as defined in §1.13) is collected.'),
+        h('li', { key: 'd3',  style: S.defItem }, h('span', { style: S.defTerm }, '1.3 “Property Record” '), 'means the structured data set, derived by Falconia from Source Material, comprising not fewer than fifteen (15) discrete datapoints describing the physical, exterior, and observable condition characteristics of a Subject Property (as defined in §1.9), as enumerated in §§5 and §6 of the Data Processing description.'),
+        h('li', { key: 'd4',  style: S.defItem }, h('span', { style: S.defTerm }, '1.4 “Identified Tier” '), 'means the data product comprising the full civic address of a Subject Property together with the complete corresponding Property Record, licensed to Buyers solely for the Permitted Uses set out in §4 and subject to the No-Outreach Clause in §5.'),
+        h('li', { key: 'd5',  style: S.defItem }, h('span', { style: S.defTerm }, '1.5 “De-identified Tier” '), 'means the data product comprising aggregated Property Record statistics resolved no finer than the Forward Sortation Area (“FSA”, the first three characters of a Canadian postal code), from which no individual Owner or Subject Property may reasonably be re-identified, as further described in §7 of the Privacy Policy.'),
+        h('li', { key: 'd6',  style: S.defItem }, h('span', { style: S.defTerm }, '1.6 “Buyer” '), 'means any person, partnership, corporation, or other legal entity that has entered into a written licensing or data services agreement with Falconia, including but not limited to insurance underwriters, mortgage lenders, contractors, asset managers, and accredited researchers.'),
+        h('li', { key: 'd7',  style: S.defItem }, h('span', { style: S.defTerm }, '1.7 “FSA” '), 'means the Forward Sortation Area, being the first three (3) characters of a Canadian postal code as administered by Canada Post Corporation.'),
+        h('li', { key: 'd8',  style: S.defItem }, h('span', { style: S.defTerm }, '1.8 “PIPEDA” '), 'means the Personal Information Protection and Electronic Documents Act, S.C. 2000, c. 5, as amended from time to time, together with the regulations promulgated thereunder and the guidance issued by the Office of the Privacy Commissioner of Canada.'),
+        h('li', { key: 'd9',  style: S.defItem }, h('span', { style: S.defTerm }, '1.9 “Subject Property” '), 'means a single residential parcel located in Canada in respect of which an Owner has provided valid Consent at the AQ booking flow and at which AQ has performed an in-person service visit.'),
+        h('li', { key: 'd10', style: S.defItem }, h('span', { style: S.defTerm }, '1.10 “Owner” '), 'means the natural person who is the registered owner, occupant, or duly authorized representative of a Subject Property and who has provided Consent at the AQ booking flow.'),
+        h('li', { key: 'd11', style: S.defItem }, h('span', { style: S.defTerm }, '1.11 “Consent” '), 'means the express, informed, and revocable consent of an Owner, captured at the AQ booking flow and incorporating by reference the AQ Terms of Service, the AQ Privacy Policy, and these Falconia documents, in conformity with PIPEDA Principle 3 (Consent).'),
+        h('li', { key: 'd12', style: S.defItem }, h('span', { style: S.defTerm }, '1.12 “Site” '), 'means the website published at https://falconia.ca/ and any successor domain operated by Falconia.'),
+        h('li', { key: 'd13', style: S.defItem }, h('span', { style: S.defTerm }, '1.13 “Source Material” '), 'means the raw imagery, thermal recordings, and ancillary observational data captured by AQ during a service visit, including without limitation thermal drone recordings of the building envelope, ground-level photography of the Subject Property exterior, and contemporaneous metadata.'),
+        h('li', { key: 'd14', style: S.defItem }, h('span', { style: S.defTerm }, '1.14 “No-Outreach Clause” '), 'means the contractual prohibition set out in §5 binding all Buyers of Identified Tier records.'),
+        h('li', { key: 'd15', style: S.defItem }, h('span', { style: S.defTerm }, '1.15 “Privacy Officer” '), 'means the individual designated by Falconia under PIPEDA Principle 1 (Accountability) and identified in §10 below and §13 of the Privacy Policy.')
+      ]),
+      h('div', { key: 'cr-1', style: S.crossref }, 'See also: Privacy Policy §1 (Information We Process); Data Processing §2 (Role of Falconia).'),
+
+      // 2. DATA PROCESSING SERVICES
+      h('h2', { key: 'h-2', id: 'tos-2', style: S.h2 }, '2. Data Processing Services'),
+      Clause('2.1', 'Falconia operates as an independent data processor and research service provider. Falconia receives Source Material from AQ, transforms such Source Material into structured Property Records, classifies Property Records into the Identified Tier or the De-identified Tier as defined in §§1.4 and 1.5, and licenses the resulting data products to qualified Buyers under written agreement.'),
+      Clause('2.2', 'Falconia does not solicit, capture, or record primary Consent directly from Owners. All Consent is obtained by AQ at the AQ booking flow in accordance with PIPEDA Principle 3 (Consent), and is incorporated by reference into AQ’s service contract with the Owner. The AQ booking flow expressly references Falconia by name and directs the Owner to this Site for the explicit disclosure layer described in the Privacy Policy and Data Processing sections.'),
+      Clause('2.3', 'Falconia does not perform any in-person services at any Subject Property. Falconia does not contact Owners. Falconia does not maintain any consumer-facing booking, contact, or lead-capture facility. The Site does not contain a contact form or commercial call to action, by design and as a matter of policy.'),
+      Clause('2.4', 'Falconia’s processing activities are limited to: (a) ingestion and quality control of Source Material delivered by AQ; (b) extraction of the datapoints enumerated in §§5 and §6 of the Data Processing description; (c) Tier classification; (d) de-identification at FSA resolution where applicable; (e) packaging, licensing, and delivery to Buyers; and (f) audit, retention, and lifecycle management of Property Records.'),
+      h('div', { key: 'cr-2', style: S.crossref }, 'See also: Data Processing §3 (Data Flow); Privacy Policy §2 (Sources of Information).'),
+
+      // 3. DATA PRODUCT TIERS
+      h('h2', { key: 'h-3', id: 'tos-3', style: S.h2 }, '3. Data Product Tiers'),
+      Clause('3.1', 'Identified Tier. The Identified Tier comprises the full civic address of a Subject Property paired with the complete Property Record. Identified Tier records are licensed only to Buyers that have (i) executed a written licensing agreement incorporating these Terms by reference, (ii) acknowledged in writing the No-Outreach Clause set out in §5, and (iii) demonstrated to Falconia’s reasonable satisfaction a legitimate business purpose falling within §4.'),
+      Clause('3.2', 'De-identified Tier. The De-identified Tier comprises Property Record statistics aggregated to no finer than the FSA level, from which no individual Owner or Subject Property may reasonably be re-identified by reference to the licensed data alone or in combination with other information reasonably available to the Buyer. The De-identified Tier may be licensed for zone-level analytic, research, and planning purposes without the No-Outreach Clause attaching, on the basis that no individual is identifiable.'),
+      Clause('3.3', 'Tier Classification. Falconia classifies each Property Record into a Tier prior to licensing. Buyers may not, by combination, enrichment, joining, inference, or any other technical or analytic means, attempt to convert De-identified Tier records into Identified Tier records, nor attempt to re-identify any Owner or Subject Property. Any such attempt shall constitute a material breach of these Terms.'),
+      Clause('3.4', 'Pricing and packaging of Tiers shall be set out in the applicable Buyer agreement and is not published on the Site.'),
+      h('div', { key: 'cr-3', style: S.crossref }, 'See also: Privacy Policy §7 (De-identification Methodology); Data Processing §5 (Datapoint Enumeration).'),
+
+      // 4. PERMITTED USES
+      h('h2', { key: 'h-4', id: 'tos-4', style: S.h2 }, '4. Permitted Uses'),
+      h('p', { key: 'p4-pre' }, 'Identified Tier records may be used by a Buyer solely for one or more of the following Permitted Uses, and for no other purpose whatsoever:'),
+      h('ol', { key: 'p4-list' }, [
+        h('li', { key: 'pu1' }, 'Property and casualty insurance underwriting, rating, and renewal review, including roof, envelope, and exterior risk assessment.'),
+        h('li', { key: 'pu2' }, 'Mortgage origination, refinance, and portfolio due diligence, including pre-funding property condition verification.'),
+        h('li', { key: 'pu3' }, 'Contractor and trade scoping, asset planning, and material estimation in relation to a property already under written contract or formal estimate request initiated by the Owner.'),
+        h('li', { key: 'pu4' }, 'Public-records-style research, journalistic inquiry, or academic study where the Buyer is bound by an equivalent or stricter ethics regime.'),
+        h('li', { key: 'pu5' }, 'Internal portfolio analytics, reserve analysis, and regulatory reporting by financial institutions and insurers.')
+      ]),
+      Clause('4.1', 'Any use not expressly enumerated above is prohibited unless first approved in writing by the Privacy Officer. Without limiting the foregoing, the following uses are expressly prohibited: (a) marketing or solicitation of Owners; (b) sale or onward licensing of Identified Tier records to third parties; (c) credit, eligibility, or insurability decisions adverse to the Owner without independent verification; (d) any use that would breach PIPEDA, applicable provincial privacy legislation, or the Canadian Human Rights Act; and (e) any use that would constitute surveillance of an identifiable individual outside the scope of the original Consent.'),
+      h('div', { key: 'cr-4', style: S.crossref }, 'See also: Privacy Policy §3 (Purposes of Processing); Privacy Policy §4 (Disclosure to Third Parties).'),
+
+      // 5. NO-OUTREACH CLAUSE
+      h('h2', { key: 'h-5', id: 'tos-5', style: S.h2 }, '5. No-Outreach Clause'),
+      h('div', { key: 'co-5', style: S.callout },
+        'The No-Outreach Clause is the central contractual safeguard distinguishing Falconia from a marketing data broker. ',
+        'Buyers of Identified Tier records are categorically prohibited from initiating commercial outreach to any Owner ',
+        'on the basis of, or in any manner informed by, the Property Record.'
+      ),
+      Clause('5.1', 'No Buyer shall, on the basis of any Identified Tier record or any inference derived therefrom, initiate any unsolicited commercial communication with any Owner, including without limitation: door-to-door canvassing, direct mail, telephone calls, text messages, e-mail, instant messaging, addressed advertising, programmatic advertising keyed to the Owner’s address, or any equivalent form of solicitation.'),
+      Clause('5.2', 'The prohibition in §5.1 applies to the Buyer, to all employees, contractors, agents, affiliates, and successors of the Buyer, and to any third party to whom the Buyer has, in breach of §4.1(b), disclosed any Identified Tier record or derivative thereof.'),
+      Clause('5.3', 'For greater certainty, the No-Outreach Clause does not prohibit a Buyer from communicating with an Owner pursuant to a pre-existing contractual relationship initiated by the Owner (for example, an active insurance policy, an active mortgage, or a contractor estimate requested by the Owner), provided that such communication does not reference, paraphrase, or rely upon any Property Record datapoint.'),
+      Clause('5.4', 'Breach of the No-Outreach Clause constitutes a material breach of the Buyer’s licensing agreement and entitles Falconia to: (a) immediate termination of the licensing agreement; (b) liquidated damages in the amount stipulated in the agreement; (c) full indemnification for any complaint, investigation, or order arising under PIPEDA or any equivalent provincial statute; and (d) referral of the breach to the Office of the Privacy Commissioner of Canada and to any affected Owner.'),
+      Clause('5.5', 'Falconia reserves the right to audit Buyer compliance with the No-Outreach Clause through technical, contractual, or sampling means, and Buyers shall co-operate fully with any such audit.'),
+      h('div', { key: 'cr-5', style: S.crossref }, 'See also: Privacy Policy §8 (Individual Rights); Data Processing §7 (Buyer Categories).'),
+
+      // 6. BUYER OBLIGATIONS
+      h('h2', { key: 'h-6', id: 'tos-6', style: S.h2 }, '6. Buyer Obligations'),
+      Clause('6.1', 'Each Buyer shall, at its own cost, maintain technical and organizational safeguards appropriate to the sensitivity of Property Records, including encryption in transit and at rest, role-based access controls, audit logging, and incident response procedures conforming to recognized industry standards.'),
+      Clause('6.2', 'Each Buyer shall verify and document its legitimate business purpose for each request and shall maintain such documentation for not less than six (6) years from the date of receipt of the relevant Property Record.'),
+      Clause('6.3', 'Onward Disclosure Prohibited. No Buyer shall sell, sublicense, redistribute, syndicate, or otherwise transfer Identified Tier records to any third party. Internal disclosure within the Buyer’s organization is permitted strictly on a need-to-know basis for the Permitted Uses set out in §4.'),
+      Clause('6.4', 'Each Buyer shall promptly notify the Privacy Officer of any actual or suspected breach of these Terms, of the security of Property Records, or of any complaint received from an Owner relating to a Property Record, in accordance with the breach reporting timelines stipulated in the Buyer’s licensing agreement and in any event no later than seventy-two (72) hours after discovery.'),
+      Clause('6.5', 'Each Buyer shall, upon Falconia’s request, return or securely destroy all Property Records within thirty (30) days of termination of the licensing agreement, and shall provide written certification of such return or destruction.'),
+      h('div', { key: 'cr-6', style: S.crossref }, 'See also: Privacy Policy §9 (Data Security); Data Processing §8 (Withdrawal Mechanism).'),
+
+      // 7. DATA RETENTION
+      h('h2', { key: 'h-7', id: 'tos-7', style: S.h2 }, '7. Data Retention'),
+      Clause('7.1', 'Property Records are retained by Falconia only as long as necessary for the purposes for which they were collected, in accordance with PIPEDA Principle 5 (Limiting Use, Disclosure, and Retention) and as further described in §11 of the Privacy Policy.'),
+      Clause('7.2', 'De-identified Tier aggregates may be retained indefinitely for research and analytic purposes, on the basis that no individual is identifiable from such aggregates.'),
+      Clause('7.3', 'Where an Owner withdraws Consent in accordance with §8 of the Privacy Policy, the corresponding Identified Tier record shall be redacted from active inventories and from all downstream Buyer-facing systems within thirty (30) days of receipt of the withdrawal notice. Falconia shall instruct Buyers to delete the affected record on the same timeline, and Buyers shall comply.'),
+      Clause('7.4', 'Source Material is retained by AQ in accordance with the AQ Privacy Policy. Falconia retains only such Source Material as is reasonably necessary to validate, audit, or reproduce a Property Record.'),
+
+      // 8. LIMITATION OF LIABILITY
+      h('h2', { key: 'h-8', id: 'tos-8', style: S.h2 }, '8. Limitation of Liability'),
+      Clause('8.1', 'Property Records are provided on an “as is” and “as available” basis. Falconia makes no representation or warranty, express or implied, as to the accuracy, completeness, fitness for any particular purpose, or non-infringement of Property Records, save as expressly set out in the applicable Buyer licensing agreement.'),
+      Clause('8.2', 'To the maximum extent permitted by law, Falconia’s aggregate liability to any Buyer in respect of any claim arising out of or in connection with the Services shall not exceed the fees paid by the Buyer to Falconia in the twelve (12) months immediately preceding the event giving rise to the claim.'),
+      Clause('8.3', 'In no event shall Falconia be liable for any indirect, incidental, consequential, special, exemplary, or punitive damages, including without limitation lost profits, lost data, or loss of goodwill, even if advised of the possibility of such damages.'),
+      Clause('8.4', 'Nothing in these Terms shall limit or exclude any liability that cannot lawfully be limited or excluded, including liability for fraud, wilful misconduct, or breach of statutory privacy obligations owed directly to an Owner.'),
+
+      // 9. GOVERNING LAW
+      h('h2', { key: 'h-9', id: 'tos-9', style: S.h2 }, '9. Governing Law and Jurisdiction'),
+      Clause('9.1', 'These Terms shall be governed by and construed in accordance with the laws of the Province of Manitoba and the federal laws of Canada applicable therein, without regard to conflict-of-laws principles.'),
+      Clause('9.2', 'The parties irrevocably attorn to the exclusive jurisdiction of the courts sitting in the City of Winnipeg, in the Province of Manitoba, in respect of any dispute arising out of or in connection with these Terms, save that Falconia may seek injunctive or equitable relief in any court of competent jurisdiction.'),
+      Clause('9.3', 'Owners retain at all times their right to file a complaint with the Office of the Privacy Commissioner of Canada or with any applicable provincial privacy commissioner, irrespective of these Terms.'),
+
+      // 10. CONTACT
+      h('h2', { key: 'h-10', id: 'tos-10', style: S.h2 }, '10. Contact and Privacy Officer'),
+      Clause('10.1', 'The Privacy Officer is the designated point of contact for all matters arising under these Terms, the Privacy Policy, and the Data Processing description. The Privacy Officer may be reached by electronic mail at the address set out in §13 of the Privacy Policy and reproduced in the Site footer.'),
+      Clause('10.2', 'Falconia does not maintain a contact form, telephone line, or live chat facility on the Site, by design and in keeping with its role as a non-consumer-facing data processor.'),
+      h('div', { key: 'cr-10', style: S.crossref }, 'See also: Privacy Policy §13 (Privacy Officer Contact).')
+    ]);
+  }
+
+  // ============================================================
+  // PRIVACY POLICY
+  // ============================================================
+  function PrivacySection() {
+    var toc = [
+      ['1.',  'Information We Process',          'pp-1'],
+      ['2.',  'Sources of Information',          'pp-2'],
+      ['3.',  'Purposes of Processing',          'pp-3'],
+      ['4.',  'Disclosure to Third Parties',     'pp-4'],
+      ['5.',  'Data Product Description',        'pp-5'],
+      ['6.',  'Consent',                         'pp-6'],
+      ['7.',  'De-identification Methodology',   'pp-7'],
+      ['8.',  'Individual Rights',               'pp-8'],
+      ['9.',  'Data Security',                   'pp-9'],
+      ['10.', 'Cross-Border Transfers',          'pp-10'],
+      ['11.', 'Retention Periods',               'pp-11'],
+      ['12.', 'Changes to This Policy',          'pp-12'],
+      ['13.', 'Privacy Officer Contact',         'pp-13']
+    ];
+
+    return Section({ id: 'privacy', alt: true }, [
+      h('div', { key: 'eb',   style: S.sectionEyebrow }, 'Document II'),
+      h('h1', { key: 'h1',    style: S.h1 }, 'Privacy Policy'),
+      h('div', { key: 'meta', style: S.sectionMeta },
+        'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION + ' · Issued under PIPEDA Principle 8 (Openness).'
+      ),
+      h('p', { key: 'pre' },
+        'This Privacy Policy describes the categories of personal information processed by Falconia, the sources from which ',
+        'such information is obtained, the purposes for which it is processed, the parties to whom it may be disclosed, ',
+        'and the rights available to Owners under the ',
+        h('em', null, 'Personal Information Protection and Electronic Documents Act'),
+        ', S.C. 2000, c. 5 (“PIPEDA”). It is published in furtherance of the openness obligation set out at PIPEDA Schedule 1, Principle 8, ',
+        'and is to be read together with the ', h('a', { href: '#terms' }, 'Terms of Service'),
+        ' and the ', h('a', { href: '#data-processing' }, 'Data Processing'), ' description.'
+      ),
+      Toc('Table of Contents', toc),
+
+      // 1. INFORMATION WE PROCESS
+      h('h2', { key: 'h-1', id: 'pp-1', style: S.h2 }, '1. Information We Process'),
+      Clause('1.1', 'Falconia processes personal information in respect of Subject Properties at which Owners have provided Consent at the AQ booking flow. The personal information processed by Falconia comprises the categories enumerated in §5 below and includes, in respect of the Identified Tier, the civic address of the Subject Property and the structured datapoints derived from the Source Material.'),
+      Clause('1.2', 'Falconia does not process the contents of any communication occurring inside a residential dwelling, the identities of occupants other than the Owner-of-record where applicable, or any biometric, health, financial, or social-insurance information.'),
+      Clause('1.3', 'Falconia does not deploy cookies, tracking pixels, fingerprinting scripts, or analytics on the Site as of the effective date of this Policy. Should this position change, this Policy will be amended in accordance with §12 below and a cookie notice will be implemented.'),
+
+      // 2. SOURCES OF INFORMATION
+      h('h2', { key: 'h-2', id: 'pp-2', style: S.h2 }, '2. Sources of Information'),
+      Clause('2.1', 'All Source Material is obtained by AQ during a service visit to the Subject Property and transmitted to Falconia for processing. Source Material includes, without limitation:'),
+      h('ol', { key: 'src-list' }, [
+        h('li', { key: 's1' }, 'Thermal recordings of the building envelope captured by drone, including roof, walls, windows, and adjacent structures.'),
+        h('li', { key: 's2' }, 'Visible-spectrum imagery of the Subject Property exterior captured by drone or hand-held camera at ground level.'),
+        h('li', { key: 's3' }, 'Contemporaneous metadata, including date, time, weather, and equipment identifiers.'),
+        h('li', { key: 's4' }, 'The civic address of the Subject Property as supplied by the Owner at the AQ booking flow.')
+      ]),
+      Clause('2.2', 'Falconia does not collect Source Material directly from Owners. Falconia does not deploy or operate any drone, camera, sensor, or other collection device. All collection is performed by AQ in the course of AQ’s service visit and in accordance with the AQ Privacy Policy and the Consent obtained by AQ.'),
+      Clause('2.3', 'Falconia may, from time to time, supplement Property Records with information obtained from public sources, including municipal property assessment rolls, parcel and zoning records, and other public registries, where such supplementation is necessary to validate or contextualize the Source Material.'),
+
+      // 3. PURPOSES OF PROCESSING
+      h('h2', { key: 'h-3', id: 'pp-3', style: S.h2 }, '3. Purposes of Processing'),
+      h('p', { key: 'pur-pre' },
+        'In accordance with PIPEDA Principle 2 (Identifying Purposes), Falconia processes personal information for the following identified purposes, and no others:'
+      ),
+      h('ol', { key: 'pur-list' }, [
+        h('li', { key: 'pur1' }, 'Conversion of Source Material into structured Property Records.'),
+        h('li', { key: 'pur2' }, 'Tier classification, packaging, and licensing of Property Records to qualified Buyers as set out in the Terms of Service §§3 and 4.'),
+        h('li', { key: 'pur3' }, 'De-identification at FSA resolution and the production of De-identified Tier aggregates for research, analytic, and planning purposes.'),
+        h('li', { key: 'pur4' }, 'Quality control, audit, and lifecycle management of Property Records.'),
+        h('li', { key: 'pur5' }, 'Compliance with applicable law, including PIPEDA, response to lawful requests from regulators, and defence of legal claims.')
+      ]),
+      Clause('3.1', 'Falconia will not use personal information for any purpose other than those identified in this section without first obtaining renewed Consent from the Owner through AQ or, where appropriate, directly.'),
+
+      // 4. DISCLOSURE TO THIRD PARTIES
+      h('h2', { key: 'h-4', id: 'pp-4', style: S.h2 }, '4. Disclosure to Third Parties'),
+      h('p', { key: 'd-pre' },
+        h('strong', null, 'Falconia licenses Property Records to commercial Buyers in exchange for a fee. '),
+        'Falconia is, in this respect, a data licensor. Buyers are bound by the Terms of Service, including the No-Outreach Clause set out at §5 thereof, and by individually negotiated written licensing agreements that incorporate these documents by reference.'
+      ),
+      h('p', { key: 'd-cat' }, 'The categories of Buyers to whom Property Records may be disclosed are:'),
+      h('table', { key: 'd-tbl', style: S.table },
+        h('thead', null,
+          h('tr', null,
+            h('th', { style: S.th }, 'Buyer Category'),
+            h('th', { style: S.th }, 'Tier(s) Available'),
+            h('th', { style: S.th }, 'Use')
+          )
+        ),
+        h('tbody', null,
+          h('tr', null,
+            h('td', { style: S.td }, 'Insurance underwriters'),
+            h('td', { style: S.td }, 'Identified, De-identified'),
+            h('td', { style: S.td }, 'Property and casualty underwriting, rating, renewal, portfolio risk.')
+          ),
+          h('tr', null,
+            h('td', { style: S.td }, 'Mortgage lenders'),
+            h('td', { style: S.td }, 'Identified, De-identified'),
+            h('td', { style: S.td }, 'Origination, refinance, due diligence, portfolio review.')
+          ),
+          h('tr', null,
+            h('td', { style: S.td }, 'Contractors and trades'),
+            h('td', { style: S.td }, 'Identified (per Owner-initiated estimate)'),
+            h('td', { style: S.td }, 'Scoping, material estimation, asset planning.')
+          ),
+          h('tr', null,
+            h('td', { style: S.td }, 'Researchers, journalists, public-interest analysts'),
+            h('td', { style: S.td }, 'De-identified (default)'),
+            h('td', { style: S.td }, 'Aggregate housing-stock and zone-level analysis.')
+          ),
+          h('tr', null,
+            h('td', { style: S.td }, 'Service providers to Falconia'),
+            h('td', { style: S.td }, 'As necessary'),
+            h('td', { style: S.td }, 'Hosting, processing, audit, legal, and accounting services performed under written contract incorporating these obligations.')
+          )
+        )
+      ),
+      Clause('4.1', 'Falconia does not disclose personal information to advertising networks, social media platforms, real-estate listing portals, lead-generation marketplaces, or any other party whose business model involves contacting Owners.'),
+      Clause('4.2', 'Falconia may disclose personal information where required by law, including in response to a court order, subpoena, or lawful request from a Canadian regulatory authority, and in such case shall, where lawful, notify the affected Owner.'),
+      h('div', { key: 'cr-4', style: S.crossref }, 'See also: Terms of Service §5 (No-Outreach Clause); Data Processing §7 (Buyer Categories).'),
+
+      // 5. DATA PRODUCT DESCRIPTION
+      h('h2', { key: 'h-5', id: 'pp-5', style: S.h2 }, '5. Data Product Description'),
+      h('p', { key: 'dpd-pre' },
+        'Each Property Record comprises a structured set of not fewer than fifteen (15) discrete datapoints derived from Source Material. ',
+        'The full enumeration of datapoints, together with the methodology by which they are derived, is published at ',
+        h('a', { href: '#data-processing' }, 'Data Processing §5'), '. ',
+        'For convenience, the principal datapoint categories are:'
+      ),
+      h('ul', { key: 'dpd-list' }, [
+        h('li', { key: 'c1' }, 'Roof condition, material, and age estimate.'),
+        h('li', { key: 'c2' }, 'Pool presence, type, and condition.'),
+        h('li', { key: 'c3' }, 'Window count, type, and thermal performance.'),
+        h('li', { key: 'c4' }, 'Building-envelope thermal signatures.'),
+        h('li', { key: 'c5' }, 'Siding material and condition.'),
+        h('li', { key: 'c6' }, 'Yard size, condition, and landscaping grade.'),
+        h('li', { key: 'c7' }, 'Property square footage, garage or carport, deck or patio.'),
+        h('li', { key: 'c8' }, 'Solar panels, chimney, foundation visible condition.'),
+        h('li', { key: 'c9' }, 'Gutter condition, exterior paint or stain condition.'),
+        h('li', { key: 'c10' }, 'Driveway material and condition.')
+      ]),
+
+      // 6. CONSENT
+      h('h2', { key: 'h-6', id: 'pp-6', style: S.h2 }, '6. Consent'),
+      Clause('6.1', 'Consent is obtained by AQ at the AQ booking flow in accordance with PIPEDA Principle 3 (Consent). The AQ booking flow expressly identifies Falconia by name, references this Site, and directs the Owner to the Terms of Service, Privacy Policy, and Data Processing description published here for the explicit disclosure layer.'),
+      Clause('6.2', 'Consent is express, informed, and revocable. The Owner may withdraw Consent at any time in accordance with §8 below. Withdrawal of Consent operates prospectively and does not affect the lawfulness of processing carried out prior to withdrawal.'),
+      Clause('6.3', 'Falconia does not rely on implied or opt-out Consent in respect of the Identified Tier. De-identified Tier aggregates, by virtue of being non-identifying, do not require ongoing Consent.'),
+
+      // 7. DE-IDENTIFICATION
+      h('h2', { key: 'h-7', id: 'pp-7', style: S.h2 }, '7. De-identification Methodology'),
+      Clause('7.1', 'De-identification is performed by aggregating Property Records to the FSA level (the first three (3) characters of the Canadian postal code), with cell-suppression rules applied to any FSA cell containing fewer than the minimum count specified in Falconia’s internal de-identification standard.'),
+      Clause('7.2', 'Direct identifiers (civic address, postal-code suffix, parcel identifier) are removed from De-identified Tier records. Indirect identifiers are reviewed against a re-identification risk threshold consistent with the guidance issued by the Office of the Privacy Commissioner of Canada and the Information and Privacy Commissioner of Ontario.'),
+      Clause('7.3', 'Buyers of De-identified Tier records are contractually prohibited from attempting re-identification, whether by joining with other datasets, by inference, or by any other means.'),
+
+      // 8. INDIVIDUAL RIGHTS
+      h('h2', { key: 'h-8', id: 'pp-8', style: S.h2 }, '8. Individual Rights'),
+      h('p', { key: 'ir-pre' }, 'In accordance with PIPEDA Principles 9 (Individual Access) and 10 (Challenging Compliance), Owners are entitled to:'),
+      h('ol', { key: 'ir-list' }, [
+        h('li', { key: 'ir1' }, 'Request access to the Property Record held by Falconia in respect of their Subject Property, and to receive a copy of such Property Record in a portable, machine-readable format.'),
+        h('li', { key: 'ir2' }, 'Request correction of any inaccuracy in the Property Record. Falconia shall investigate and, where the request is well founded, correct the Property Record and notify Buyers to whom the affected record was disclosed within the preceding twelve (12) months.'),
+        h('li', { key: 'ir3' }, 'Withdraw Consent prospectively, in which case Falconia shall remove the affected Identified Tier record from active inventories and instruct Buyers to delete the record within thirty (30) days, in accordance with Terms of Service §7.3.'),
+        h('li', { key: 'ir4' }, 'Request information regarding the Buyers to whom the Owner’s Property Record has been disclosed in the preceding twelve (12) months, subject to confidentiality obligations owed to Buyers.'),
+        h('li', { key: 'ir5' }, 'Lodge a complaint with the Privacy Officer (§13) and, if dissatisfied with the response, with the Office of the Privacy Commissioner of Canada.')
+      ]),
+      Clause('8.1', 'Requests under this section may be addressed to the Privacy Officer at the e-mail address set out in §13. Falconia shall respond within thirty (30) days of receipt or, where an extension is necessary, shall notify the Owner of the extension and the reason therefor in accordance with PIPEDA s. 8.'),
+
+      // 9. DATA SECURITY
+      h('h2', { key: 'h-9', id: 'pp-9', style: S.h2 }, '9. Data Security'),
+      Clause('9.1', 'Falconia maintains physical, administrative, and technical safeguards appropriate to the sensitivity of Property Records, in accordance with PIPEDA Principle 7 (Safeguards). Safeguards include encryption in transit and at rest, role-based access controls, audit logging, segregation of production and non-production environments, and an incident response procedure.'),
+      Clause('9.2', 'Falconia requires equivalent safeguards of all service providers and Buyers by written contract, as set out in Terms of Service §6.1.'),
+      Clause('9.3', 'In the event of a breach of security safeguards involving a real risk of significant harm to an Owner, Falconia shall report the breach to the Office of the Privacy Commissioner of Canada and notify the affected Owner in accordance with PIPEDA s. 10.1.'),
+
+      // 10. CROSS-BORDER
+      h('h2', { key: 'h-10', id: 'pp-10', style: S.h2 }, '10. Cross-Border Transfers'),
+      Clause('10.1', 'Falconia processes and stores Property Records in Canada by default. Where any service provider engaged by Falconia processes personal information outside Canada, Falconia shall require contractual safeguards equivalent to those required by PIPEDA and shall disclose the country of processing on request.'),
+      Clause('10.2', 'Buyers located outside Canada may receive Identified Tier records only where the Buyer has executed a written licensing agreement subjecting the Buyer to Manitoba law and incorporating the No-Outreach Clause and the safeguards described in Terms of Service §6.'),
+
+      // 11. RETENTION
+      h('h2', { key: 'h-11', id: 'pp-11', style: S.h2 }, '11. Retention Periods'),
+      Clause('11.1', 'Identified Tier records are retained for the period necessary to fulfil the purposes set out in §3, and in any event no longer than seven (7) years from the date of the underlying AQ service visit, unless a longer period is required by law or by an active Buyer licensing agreement.'),
+      Clause('11.2', 'De-identified Tier aggregates may be retained indefinitely on the basis that no individual is identifiable from such aggregates.'),
+      Clause('11.3', 'Source Material is retained for the minimum period necessary to validate the corresponding Property Record and is thereafter securely destroyed in accordance with PIPEDA Principle 5.'),
+      Clause('11.4', 'Where an Owner withdraws Consent under §8.3, the affected Identified Tier record is redacted from active inventories within thirty (30) days, subject only to such retention as is required for legal, audit, or dispute-resolution purposes.'),
+
+      // 12. CHANGES
+      h('h2', { key: 'h-12', id: 'pp-12', style: S.h2 }, '12. Changes to This Policy'),
+      Clause('12.1', 'Falconia may amend this Policy from time to time. The version and effective date appear at the top of this Policy. Material changes will be reflected in a revised version number and effective date. Owners and Buyers should review the Policy periodically. Continued use of the Services following any change constitutes acceptance of the revised Policy, save that material changes affecting the rights of Owners shall not apply retroactively to Property Records collected under a prior version of the Policy.'),
+
+      // 13. PRIVACY OFFICER
+      h('h2', { key: 'h-13', id: 'pp-13', style: S.h2 }, '13. Privacy Officer Contact'),
+      Clause('13.1', 'The Privacy Officer designated by Falconia under PIPEDA Principle 1 (Accountability) may be reached at:'),
+      h('p', { key: 'po', style: { background: '#FFFFFF', border: '1px solid ' + COLORS.border, padding: '14px 18px', fontSize: '13px' } },
+        h('strong', null, 'Privacy Officer, Falconia'), h('br', null),
+        h('a', { href: 'mailto:' + PRIVACY_EMAIL }, PRIVACY_EMAIL), h('br', null),
+        h('span', { style: { color: COLORS.secondary, fontSize: '12px' } }, 'Interim address. May migrate to a falconia.ca address; a notice will be posted to this Site.')
+      ),
+      Clause('13.2', 'Owners may also contact the Office of the Privacy Commissioner of Canada at https://www.priv.gc.ca/ or by mail at 30 Victoria Street, Gatineau, Quebec K1A 1H3.')
+    ]);
+  }
+
+  // ============================================================
+  // DATA PROCESSING
+  // ============================================================
+  function DataProcessingSection() {
+    var toc = [
+      ['1.', 'Purpose of This Document',                'dp-1'],
+      ['2.', 'Role of Falconia',                        'dp-2'],
+      ['3.', 'Data Flow',                               'dp-3'],
+      ['4.', 'Collection Methodology',                  'dp-4'],
+      ['5.', 'Datapoint Enumeration',                   'dp-5'],
+      ['6.', 'Processing and Storage',                  'dp-6'],
+      ['7.', 'Buyer Categories and Restrictions',      'dp-7'],
+      ['8.', 'Withdrawal Mechanism',                    'dp-8']
+    ];
+
+    return Section({ id: 'data-processing' }, [
+      h('div', { key: 'eb',   style: S.sectionEyebrow }, 'Document III'),
+      h('h1', { key: 'h1',    style: S.h1 }, 'Data Processing'),
+      h('div', { key: 'meta', style: S.sectionMeta },
+        'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION + ' · Operational description for the avoidance of doubt.'
+      ),
+      h('p', { key: 'pre' },
+        'This document describes, in operational terms, the processing performed by Falconia in respect of Source Material received from AQ. ',
+        'It is published in furtherance of PIPEDA Principle 8 (Openness) and is to be read together with the ',
+        h('a', { href: '#terms' }, 'Terms of Service'), ' and the ',
+        h('a', { href: '#privacy' }, 'Privacy Policy'), '.'
+      ),
+      Toc('Table of Contents', toc),
+
+      // 1. PURPOSE
+      h('h2', { key: 'h-1', id: 'dp-1', style: S.h2 }, '1. Purpose of This Document'),
+      Clause('1.1', 'This document exists to provide an exhaustive, plain-language description of the data processing operations performed by Falconia, in the absence of any consumer-facing booking flow at which a more abbreviated disclosure could be made. It is intended to satisfy, at the depth required by the Office of the Privacy Commissioner of Canada’s guidance on meaningful consent, the explicit disclosure layer beneath the Consent obtained at the AQ booking flow.'),
+
+      // 2. ROLE
+      h('h2', { key: 'h-2', id: 'dp-2', style: S.h2 }, '2. Role of Falconia'),
+      Clause('2.1', 'Falconia is, in respect of Source Material, a downstream data processor and aggregator. Falconia is not a service provider to any Owner. Falconia is not a marketing organization. Falconia does not contact Owners and does not maintain any consumer-facing channel.'),
+      Clause('2.2', 'Falconia is, in respect of Property Records, a data licensor to Buyers. Property Records are licensed under written agreement on the terms set out in the Terms of Service.'),
+      Clause('2.3', 'AQ is the service provider to the Owner and the party that captures primary Consent. The legal architecture of Consent flows from the Owner to AQ to Falconia, in that order, with this Site providing the explicit disclosure layer required for the Consent to be informed.'),
+
+      // 3. DATA FLOW
+      h('h2', { key: 'h-3', id: 'dp-3', style: S.h2 }, '3. Data Flow'),
+      Clause('3.1', 'The end-to-end data flow is described below. Each arrow represents a discrete transfer or transformation; each label identifies the actor responsible.'),
+      h('pre', { key: 'flow', style: S.flow },
+        'OWNER\n' +
+        '  |  Books service via AQ\n' +
+        '  v\n' +
+        'AQ BOOKING FLOW\n' +
+        '  |  Captures express, informed Consent.\n' +
+        '  |  References Falconia by name and links to this Site.\n' +
+        '  v\n' +
+        'AQ SERVICE VISIT (at Subject Property)\n' +
+        '  |  Performs contracted residential service.\n' +
+        '  |  Collects Source Material: thermal drone, ground photography, metadata.\n' +
+        '  v\n' +
+        'TRANSFER TO FALCONIA\n' +
+        '  |  Source Material transmitted to Falconia under written agreement.\n' +
+        '  v\n' +
+        'FALCONIA PROCESSING\n' +
+        '  |  Quality control, datapoint extraction, Property Record creation.\n' +
+        '  v\n' +
+        'TIER CLASSIFICATION\n' +
+        '  |  Identified Tier  -> full address + Property Record\n' +
+        '  |  De-identified Tier -> FSA-aggregated statistics\n' +
+        '  v\n' +
+        'BUYER LICENSING\n' +
+        '  |  Written agreement incorporates these Terms by reference.\n' +
+        '  |  Identified Tier subject to No-Outreach Clause (ToS §5).\n' +
+        '  v\n' +
+        'BUYER USE (Permitted Uses only, ToS §4)\n'
+      ),
+
+      // 4. COLLECTION METHODOLOGY
+      h('h2', { key: 'h-4', id: 'dp-4', style: S.h2 }, '4. Collection Methodology'),
+      Clause('4.1', 'Source Material is captured by AQ during a service visit. Thermal recordings of the building envelope are captured by drone operating in accordance with Transport Canada regulations and within the airspace immediately above and adjacent to the Subject Property. Visible-spectrum imagery is captured by drone or hand-held camera at ground level. Contemporaneous metadata, including date, time, weather, and equipment identifiers, is recorded automatically.'),
+      Clause('4.2', 'Drone operations are conducted with reasonable measures to limit incidental capture of neighbouring properties. Where incidental capture occurs, such material is excluded from the Property Record and is not licensed.'),
+      Clause('4.3', 'No audio recording is performed. No interior imagery is captured.'),
+
+      // 5. DATAPOINT ENUMERATION
+      h('h2', { key: 'h-5', id: 'dp-5', style: S.h2 }, '5. Datapoint Enumeration'),
+      h('p', { key: 'dp5-pre' },
+        'Each Property Record comprises not fewer than fifteen (15) discrete datapoints. The minimum enumeration is set out below. ',
+        'Additional datapoints may be derived from Source Material and included in the Property Record where reliably extractable; ',
+        'such additional datapoints are subject to the same Tier classification and licensing controls.'
+      ),
+      h('table', { key: 'dp5-tbl', style: S.table },
+        h('thead', null,
+          h('tr', null,
+            h('th', { style: S.th }, '#'),
+            h('th', { style: S.th }, 'Datapoint'),
+            h('th', { style: S.th }, 'Description')
+          )
+        ),
+        h('tbody', null,
+          [
+            ['1',  'Roof condition',          'Visible condition rating, material identification, and indicative age.'],
+            ['2',  'Pool presence',           'Presence, type (in-ground, above-ground), and visible condition.'],
+            ['3',  'Window count and type',   'Count, glazing type where determinable, and thermal performance indicator.'],
+            ['4',  'Thermal signatures',      'Building-envelope thermal patterns, including indicative heat loss.'],
+            ['5',  'Siding material',         'Material identification (vinyl, wood, brick, stucco, fibre-cement, etc.) and condition.'],
+            ['6',  'Yard size',               'Indicative parcel area and developed-yard area.'],
+            ['7',  'Yard condition',          'Landscaping grade and visible maintenance state.'],
+            ['8',  'Property square footage', 'Indicative gross floor area derived from envelope measurement.'],
+            ['9',  'Garage or carport',       'Presence, type, and capacity indicator.'],
+            ['10', 'Deck or patio',           'Presence, material, and condition.'],
+            ['11', 'Solar panels',            'Presence, count, and indicative orientation.'],
+            ['12', 'Chimney',                 'Presence, count, and visible condition.'],
+            ['13', 'Foundation visible condition', 'Visible portion only; no intrusive inspection.'],
+            ['14', 'Gutter condition',        'Material and visible condition.'],
+            ['15', 'Exterior paint or stain', 'Indicative condition rating.'],
+            ['16', 'Driveway',                'Material (asphalt, concrete, gravel, paver) and condition.'],
+            ['17', 'Landscaping grade',       'Composite indicator of soft and hard landscaping.']
+          ].map(function (r) {
+            return h('tr', { key: r[0] },
+              h('td', { style: S.td }, r[0]),
+              h('td', { style: S.td }, r[1]),
+              h('td', { style: S.td }, r[2])
+            );
+          })
+        )
+      ),
+      h('div', { key: 'cr-5', style: S.crossref }, 'See also: Privacy Policy §5 (Data Product Description); Privacy Policy §7 (De-identification Methodology).'),
+
+      // 6. PROCESSING AND STORAGE
+      h('h2', { key: 'h-6', id: 'dp-6', style: S.h2 }, '6. Processing and Storage'),
+      Clause('6.1', 'Source Material is ingested into a controlled processing environment, validated for quality, and processed by a combination of automated extraction and manual quality control. Property Records are written to a structured store with row-level access controls.'),
+      Clause('6.2', 'Property Records are stored in Canada by default. Encryption is applied in transit and at rest. Access is restricted to personnel with a documented operational need.'),
+      Clause('6.3', 'De-identification, where applied, is performed within the controlled environment by application of the methodology described at Privacy Policy §7. Cell-suppression rules apply to small FSA cells.'),
+
+      // 7. BUYER CATEGORIES
+      h('h2', { key: 'h-7', id: 'dp-7', style: S.h2 }, '7. Buyer Categories and Restrictions'),
+      Clause('7.1', 'Buyers fall within the categories enumerated at Privacy Policy §4. Each Buyer is bound by a written licensing agreement incorporating the Terms of Service and Privacy Policy by reference.'),
+      Clause('7.2', 'Identified Tier records are licensed only to Buyers that have acknowledged the No-Outreach Clause (Terms of Service §5) in writing and that have demonstrated to Falconia’s reasonable satisfaction a legitimate business purpose falling within Terms of Service §4.'),
+      Clause('7.3', 'De-identified Tier records may be licensed to a broader range of researchers, journalists, and analysts on the basis that no individual is identifiable.'),
+      Clause('7.4', 'Onward disclosure of Identified Tier records is prohibited. Sale, sublicensing, syndication, and redistribution by Buyers are categorically forbidden.'),
+
+      // 8. WITHDRAWAL
+      h('h2', { key: 'h-8', id: 'dp-8', style: S.h2 }, '8. Withdrawal Mechanism'),
+      Clause('8.1', 'An Owner may withdraw Consent prospectively at any time by writing to the Privacy Officer at the address set out at Privacy Policy §13. The notice should identify the Subject Property by civic address.'),
+      Clause('8.2', 'On receipt of a valid withdrawal notice, Falconia shall, within thirty (30) days: (a) redact the affected Identified Tier record from active inventories; (b) instruct each Buyer to whom the affected record was disclosed within the preceding twelve (12) months to delete the record and confirm such deletion; and (c) acknowledge the withdrawal in writing to the Owner.'),
+      Clause('8.3', 'De-identified Tier aggregates incorporating data derived from the Subject Property prior to withdrawal need not be reconstituted, on the basis that no individual is identifiable from such aggregates. This treatment is consistent with the guidance of the Office of the Privacy Commissioner of Canada on the application of PIPEDA to de-identified information.'),
+      h('div', { key: 'cr-8', style: S.crossref }, 'See also: Privacy Policy §8 (Individual Rights); Terms of Service §7 (Data Retention).')
+    ]);
+  }
+
+  // ----- Footer -----
+  function Footer() {
+    return h('footer', { style: S.footer, className: 'fal-no-print' },
+      h('div', { style: S.footerInner, className: 'fal-footer-inner' },
+        h('div', { style: S.footerRow },
+          h('div', { style: S.footerCol },
+            h('div', { style: S.footerHead }, 'Falconia'),
+            'Federal Corporation — Canada', h('br', null),
+            'Operations: Manitoba', h('br', null),
+            'Governing Law: Manitoba'
+          ),
+          h('div', { style: S.footerCol },
+            h('div', { style: S.footerHead }, 'Documents'),
+            h('a', { href: '#terms', style: S.footerLink }, 'Terms of Service'), h('br', null),
+            h('a', { href: '#privacy', style: S.footerLink }, 'Privacy Policy'), h('br', null),
+            h('a', { href: '#data-processing', style: S.footerLink }, 'Data Processing')
+          ),
+          h('div', { style: S.footerCol },
+            h('div', { style: S.footerHead }, 'Privacy Officer'),
+            h('a', { href: 'mailto:' + PRIVACY_EMAIL, style: S.footerLink }, PRIVACY_EMAIL), h('br', null),
+            h('span', { style: { color: COLORS.headerFaint } }, 'Interim contact address')
+          )
+        ),
+        h('div', { style: S.footerFine },
+          '© 2026 Falconia. All rights reserved. · ',
+          'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION + '. ',
+          'PIPEDA-compliant disclosure layer. No analytics, no cookies, no consumer-facing channel.'
+        )
+      )
+    );
+  }
+
+  // ----- App -----
+  function App() {
+    return h(React.Fragment, null,
+      h(Header),
+      h(Hero),
+      h(TermsSection),
+      h(PrivacySection),
+      h(DataProcessingSection),
+      h(Footer)
+    );
+  }
+
+  var root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(h(App));
+})();
+</script>
+</body>
+</html>
