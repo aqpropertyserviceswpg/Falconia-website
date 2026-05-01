@@ -3,134 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Falconia &mdash; Property Data Processing &amp; Research Services</title>
-<meta name="description" content="Falconia is a federal Canadian corporation providing property data processing and research services in compliance with the Personal Information Protection and Electronic Documents Act (PIPEDA).">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()">
+<title>Falconia &mdash; Property Record Processing &amp; Research</title>
+<meta name="description" content="Falconia is a federal Canadian corporation providing property record processing and research in compliance with PIPEDA.">
 <meta name="robots" content="index, follow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://falconia.ca/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.65;
-    color: #334155;
-    background: #FFFFFF;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  a { color: #1E40AF; text-decoration: underline; text-underline-offset: 2px; }
-  a:hover { color: #1E3A8A; }
-  ol, ul { padding-left: 22px; }
-  li { margin-bottom: 6px; }
-  p { margin: 0 0 14px 0; }
-  h1, h2, h3 { letter-spacing: -0.01em; color: #0F172A; margin: 0; }
-  ::selection { background: #DBEAFE; color: #0F172A; }
-  @media (max-width: 720px) {
-    .fal-page, .fal-header-inner, .fal-footer-inner { padding-left: 24px !important; padding-right: 24px !important; }
-    .fal-nav { gap: 12px !important; }
-    .fal-jurisdiction { display: none !important; }
-  }
-  @media print {
-    .fal-no-print { display: none !important; }
-    body { font-size: 11pt; color: #000; }
-    a { color: #000; text-decoration: none; }
-    .fal-section { page-break-inside: auto; border: none !important; background: #fff !important; }
-  }
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.65;color:#334155;background:#FFFFFF;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a{color:#1E40AF;text-decoration:underline;text-underline-offset:2px}
+a:hover{color:#1E3A8A}
+ol,ul{padding-left:22px}
+li{margin-bottom:6px}
+p{margin:0 0 14px 0}
+h1,h2,h3{letter-spacing:-0.01em;color:#0F172A;margin:0}
+::selection{background:#DBEAFE;color:#0F172A}
+.fal-toc-list{columns:2;column-gap:24px}
+.fal-footer-link{transition:color 120ms ease}
+.fal-footer-link:hover{color:#FFFFFF !important}
+.fal-privacy-btn:hover{background:#1E3A8A !important}
+@media (max-width:720px){
+  .fal-page,.fal-header-inner,.fal-footer-inner{padding-left:24px !important;padding-right:24px !important}
+  .fal-nav{gap:12px !important}
+  .fal-jurisdiction{display:none !important}
+  .fal-toc-list{columns:1 !important}
+  .fal-tier-wrap{flex-direction:column !important}
+}
+@media print{
+  .fal-no-print{display:none !important}
+  body{font-size:11pt;color:#000}
+  a{color:#000;text-decoration:none}
+  .fal-section{page-break-inside:auto;border:none !important;background:#fff !important}
+  .fal-flow-svg{max-width:100% !important}
+}
 </style>
 </head>
 <body>
 <div id="root"></div>
 
-<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
-<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script crossorigin="anonymous" integrity="sha512-QVs8Lo43F9lSuBykadDb0oSXDL/BbZ588urWVCRwSIoewQv/Ewg1f84mK3U790bZ0FfhFa1YSQUmIhG+pIRKeg==" src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin="anonymous" integrity="sha512-6a1107rTlA4gYpgHAqbwLAtxmWipBdJFcq8y5S/aTge3Bp+VAklABm2LO+Kg51vOWR9JMZq1Ovjl5tpluNpTeQ==" src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 <script>
 (function () {
   var h = React.createElement;
 
   var COLORS = {
-    primary:     '#0F172A',
-    bodyText:    '#334155',
-    secondary:   '#64748B',
-    background:  '#FFFFFF',
-    surface:     '#F8FAFC',
-    border:      '#E2E8F0',
-    accent:      '#1E40AF',
-    accentHover: '#1E3A8A',
-    headerMuted: '#CBD5E1',
-    headerFaint: '#94A3B8'
+    primary:      '#0F172A',
+    bodyText:     '#334155',
+    secondary:    '#64748B',
+    background:   '#FFFFFF',
+    surface:      '#F8FAFC',
+    border:       '#E2E8F0',
+    accent:       '#1E40AF',
+    accentHover:  '#1E3A8A',
+    headerMuted:  '#CBD5E1',
+    headerFaint:  '#94A3B8',
+    headerBorder: '#1E293B'
   };
 
   var EFFECTIVE_DATE = 'May 1, 2026';
   var VERSION = '2026.05.01';
-  var PRIVACY_EMAIL = 'aqpropertyserviceswpg@gmail.com';
+  var PRIVACY_EMAIL = 'privacy@falconia.ca';
 
   var S = {
     page: { maxWidth: '780px', margin: '0 auto', padding: '0 40px' },
 
     header: {
       position: 'sticky', top: 0, zIndex: 50,
-      background: COLORS.primary, color: '#FFFFFF',
-      borderBottom: '1px solid #1E293B'
+      background: COLORS.primary, color: COLORS.background,
+      borderBottom: '1px solid ' + COLORS.headerBorder
     },
     headerInner: {
       maxWidth: '780px', margin: '0 auto', padding: '0 40px',
       height: '56px', display: 'flex', alignItems: 'center',
       justifyContent: 'space-between', gap: '20px'
     },
+    wordmarkBox: {
+      display: 'flex', flexDirection: 'column', justifyContent: 'center',
+      gap: '3px', textDecoration: 'none'
+    },
     wordmark: {
-      fontSize: '15px', fontWeight: 700, letterSpacing: '0.04em',
-      color: '#FFFFFF', textDecoration: 'none', textTransform: 'uppercase'
+      fontSize: '15px', fontWeight: 700, letterSpacing: '0.08em',
+      color: COLORS.background, textDecoration: 'none', textTransform: 'uppercase',
+      lineHeight: 1
     },
     nav: { display: 'flex', gap: '20px', alignItems: 'center' },
     navLink: {
       color: COLORS.headerMuted, textDecoration: 'none',
-      fontSize: '12.5px', fontWeight: 500, letterSpacing: '0.02em'
+      fontSize: '12px', fontWeight: 500, letterSpacing: '0.02em'
     },
     jurisdiction: {
       fontSize: '10.5px', color: COLORS.headerFaint,
       letterSpacing: '0.08em', textTransform: 'uppercase',
-      whiteSpace: 'nowrap', borderLeft: '1px solid #334155',
+      whiteSpace: 'nowrap', borderLeft: '1px solid ' + COLORS.bodyText,
       paddingLeft: '16px'
     },
 
-    hero: { padding: '56px 0 40px', borderBottom: '1px solid ' + COLORS.border },
-    heroEyebrow: {
-      fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em',
-      textTransform: 'uppercase', color: COLORS.secondary, marginBottom: '12px'
-    },
-    heroTitle: { fontSize: '26px', fontWeight: 700, color: COLORS.primary, marginBottom: '10px' },
+    hero: { padding: '48px 0 32px', borderBottom: '1px solid ' + COLORS.border },
+    heroTitle: { fontSize: '24px', fontWeight: 700, color: COLORS.primary, marginBottom: '10px' },
     heroSub: { fontSize: '15px', color: COLORS.bodyText, marginBottom: '20px', maxWidth: '640px' },
-    heroMeta: {
-      fontSize: '12px', color: COLORS.secondary,
-      letterSpacing: '0.02em', display: 'flex', flexWrap: 'wrap', gap: '16px'
-    },
-    heroMetaItem: { display: 'inline-block' },
 
     section: { padding: '56px 0', borderBottom: '1px solid ' + COLORS.border, scrollMarginTop: '64px' },
     sectionAlt: { background: COLORS.surface },
 
-    sectionEyebrow: {
-      fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em',
-      textTransform: 'uppercase', color: COLORS.secondary, marginBottom: '8px'
-    },
     h1: { fontSize: '24px', fontWeight: 700, color: COLORS.primary, marginBottom: '6px' },
     sectionMeta: { fontSize: '12px', color: COLORS.secondary, marginBottom: '20px' },
 
-    h2: { fontSize: '17px', fontWeight: 700, color: COLORS.primary, marginTop: '36px', marginBottom: '12px' },
-    h3: { fontSize: '14px', fontWeight: 700, color: COLORS.primary, marginTop: '20px', marginBottom: '8px' },
+    h2: { fontSize: '17px', fontWeight: 700, color: COLORS.primary, marginTop: '28px', marginBottom: '12px' },
 
     toc: {
-      background: '#FFFFFF', border: '1px solid ' + COLORS.border,
+      background: COLORS.background, border: '1px solid ' + COLORS.border,
       padding: '18px 22px', margin: '20px 0 28px'
     },
     tocTitle: {
       fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em',
       textTransform: 'uppercase', color: COLORS.primary, marginBottom: '10px'
     },
-    tocList: { listStyle: 'none', padding: 0, margin: 0, columns: 2, columnGap: '24px' },
+    tocList: { listStyle: 'none', padding: 0, margin: 0 },
     tocItem: { fontSize: '12.5px', lineHeight: 1.9, breakInside: 'avoid' },
     tocNum: { display: 'inline-block', minWidth: '24px', color: COLORS.secondary },
 
@@ -149,50 +145,103 @@
     },
     td: { padding: '10px 12px', borderBottom: '1px solid ' + COLORS.border, verticalAlign: 'top' },
 
-    flow: {
-      background: '#0F172A', color: '#E2E8F0',
-      border: '1px solid #1E293B', padding: '20px 22px', margin: '18px 0',
-      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-      fontSize: '12px', lineHeight: 1.9, whiteSpace: 'pre-wrap', overflowX: 'auto'
-    },
-
     callout: {
-      borderLeft: '3px solid ' + COLORS.accent,
+      borderLeft: '3px solid ' + COLORS.primary,
       background: COLORS.surface, padding: '14px 18px', margin: '16px 0',
       fontSize: '13px', color: COLORS.bodyText
     },
 
     crossref: {
       fontSize: '12px', color: COLORS.secondary,
-      fontStyle: 'italic', marginTop: '8px'
+      marginTop: '8px'
     },
 
-    badgeRow: { display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '16px' },
-    badge: {
-      display: 'inline-block', padding: '4px 10px',
-      border: '1px solid ' + COLORS.border, background: '#FFFFFF',
-      fontSize: '11px', fontWeight: 600, letterSpacing: '0.04em',
-      textTransform: 'uppercase', color: COLORS.primary, borderRadius: '2px'
+    poBlock: {
+      borderLeft: '3px solid ' + COLORS.primary,
+      background: COLORS.surface, padding: '14px 18px',
+      fontSize: '13px', margin: '12px 0'
     },
 
     footer: { background: COLORS.primary, color: COLORS.headerMuted, padding: '40px 0', fontSize: '12px', lineHeight: 1.85 },
     footerInner: { maxWidth: '780px', margin: '0 auto', padding: '0 40px' },
     footerRow: { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' },
     footerCol: { minWidth: '200px' },
-    footerHead: { color: '#FFFFFF', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' },
+    footerHead: { color: COLORS.background, fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' },
     footerLink: { color: COLORS.headerMuted, textDecoration: 'none' },
-    footerFine: { marginTop: '28px', paddingTop: '20px', borderTop: '1px solid #1E293B', color: COLORS.headerFaint, fontSize: '11px' }
+    footerFine: { marginTop: '28px', paddingTop: '20px', borderTop: '1px solid ' + COLORS.headerBorder, color: COLORS.headerFaint, fontSize: '11px' },
+
+    privacyFooterCard: {
+      background: 'rgba(255,255,255,0.03)', border: '1px solid ' + COLORS.headerBorder,
+      padding: '14px 16px', borderRadius: '4px', marginTop: '4px'
+    },
+    privacyFooterEmail: {
+      color: COLORS.background, textDecoration: 'none', fontWeight: 600,
+      fontSize: '13px', display: 'block', marginBottom: '8px'
+    },
+    privacyFooterBtn: {
+      display: 'inline-block', background: COLORS.accent, color: COLORS.background,
+      padding: '7px 12px', textDecoration: 'none', fontSize: '11px',
+      fontWeight: 600, borderRadius: '3px', letterSpacing: '0.04em',
+      textTransform: 'uppercase', transition: 'background 120ms ease'
+    },
+
+    summaryBox: {
+      borderLeft: '3px solid ' + COLORS.accent,
+      background: '#EEF2F8', padding: '14px 18px', margin: '16px 0 24px',
+      fontSize: '13px', color: COLORS.bodyText, lineHeight: 1.65
+    },
+
+    tierCardWrap: {
+      display: 'flex', gap: '16px', margin: '20px 0 24px', flexWrap: 'wrap'
+    },
+    tierCard: {
+      flex: '1 1 240px', border: '1px solid ' + COLORS.border,
+      background: COLORS.background, borderRadius: '4px', overflow: 'hidden',
+      display: 'flex', flexDirection: 'column'
+    },
+    tierCardHead: {
+      background: COLORS.primary, color: COLORS.background,
+      padding: '12px 16px', fontSize: '12px', fontWeight: 700,
+      letterSpacing: '0.08em', textTransform: 'uppercase'
+    },
+    tierCardBody: { padding: '4px 16px 12px' },
+    tierRow: {
+      display: 'flex', justifyContent: 'space-between', gap: '12px',
+      padding: '10px 0', borderBottom: '1px solid ' + COLORS.border,
+      fontSize: '12.5px'
+    },
+    tierLabel: { color: COLORS.secondary, fontWeight: 600, flex: '0 0 auto' },
+    tierValue: { color: COLORS.primary, textAlign: 'right' },
+
+    flowSvgWrap: {
+      margin: '20px 0', padding: '24px 12px',
+      background: COLORS.background, border: '1px solid ' + COLORS.border,
+      borderRadius: '4px'
+    },
+
+    changelogList: { listStyle: 'none', padding: 0, margin: '12px 0 0' },
+    changelogItem: {
+      padding: '12px 0', borderBottom: '1px solid ' + COLORS.border,
+      fontSize: '13px'
+    },
+    changelogVer: {
+      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+      fontWeight: 700, color: COLORS.primary, marginRight: '12px'
+    },
+    changelogDate: { color: COLORS.secondary, fontSize: '12px', marginRight: '12px' }
   };
 
   // ----- Header -----
   function Header() {
     return h('header', { style: S.header, className: 'fal-no-print' },
       h('div', { style: S.headerInner, className: 'fal-header-inner' },
-        h('a', { href: '#top', style: S.wordmark }, 'Falconia'),
+        h('a', { href: '#top', style: S.wordmarkBox },
+          h('span', { style: S.wordmark }, 'Falconia')
+        ),
         h('nav', { style: S.nav, className: 'fal-nav' },
-          h('a', { href: '#terms', style: S.navLink }, 'Terms of Service'),
-          h('a', { href: '#privacy', style: S.navLink }, 'Privacy Policy'),
-          h('a', { href: '#data-processing', style: S.navLink }, 'Data Processing')
+          h('a', { href: '#data-processing', style: S.navLink }, 'How It Works'),
+          h('a', { href: '#privacy', style: S.navLink }, 'Privacy'),
+          h('a', { href: '#terms', style: S.navLink }, 'Terms')
         ),
         h('span', { style: S.jurisdiction, className: 'fal-jurisdiction' }, 'Canada · PIPEDA')
       )
@@ -203,26 +252,9 @@
   function Hero() {
     return h('section', { id: 'top', style: S.hero },
       h('div', { style: S.page, className: 'fal-page' },
-        h('div', { style: S.heroEyebrow }, 'Falconia, Federal Corporation — Canada'),
-        h('h1', { style: S.heroTitle }, 'Property data processing and research services.'),
+        h('h1', { style: S.heroTitle }, 'Structured records. Written agreements.'),
         h('p', { style: S.heroSub },
-          'Falconia operates as an independent data processor and research service provider. ',
-          'This site provides the explicit disclosure layer required under the ',
-          'Personal Information Protection and Electronic Documents Act (PIPEDA), ',
-          'including the ', h('a', { href: '#terms' }, 'Terms of Service'), ', ',
-          h('a', { href: '#privacy' }, 'Privacy Policy'), ', and ',
-          h('a', { href: '#data-processing' }, 'Data Processing description'), ' below.'
-        ),
-        h('div', { style: S.heroMeta },
-          h('span', { style: S.heroMetaItem }, 'Effective: ' + EFFECTIVE_DATE),
-          h('span', { style: S.heroMetaItem }, 'Version ' + VERSION),
-          h('span', { style: S.heroMetaItem }, 'Governing Law: Manitoba, Canada')
-        ),
-        h('div', { style: S.badgeRow },
-          h('span', { style: S.badge }, 'Federal Corporation'),
-          h('span', { style: S.badge }, 'PIPEDA Compliant'),
-          h('span', { style: S.badge }, 'Manitoba Choice of Law'),
-          h('span', { style: S.badge }, 'No-Outreach Buyer Clause')
+          'Exterior property intelligence for insurers, lenders, and researchers.'
         )
       )
     );
@@ -232,7 +264,7 @@
   function Toc(title, items) {
     return h('aside', { style: S.toc },
       h('div', { style: S.tocTitle }, title),
-      h('ol', { style: S.tocList },
+      h('ol', { style: S.tocList, className: 'fal-toc-list' },
         items.map(function (it) {
           return h('li', { key: it[0], style: S.tocItem },
             h('span', { style: S.tocNum }, it[0]),
@@ -245,7 +277,10 @@
 
   // ----- Section helper -----
   function Section(props, children) {
-    var style = Object.assign({}, S.section, props.alt ? S.sectionAlt : {});
+    var style = Object.assign({}, S.section,
+      props.alt ? S.sectionAlt : {},
+      props.topBorder ? { borderTop: '1px solid ' + COLORS.border } : {}
+    );
     return h('section', { id: props.id, style: style, className: 'fal-section' },
       h('div', { style: S.page, className: 'fal-page' }, children)
     );
@@ -276,20 +311,21 @@
       ['10.', 'Contact and Privacy Officer',          'tos-10']
     ];
 
-    return Section({ id: 'terms' }, [
-      h('div', { key: 'eb',   style: S.sectionEyebrow }, 'Document I'),
+    return Section({ id: 'terms', topBorder: true }, [
       h('h1', { key: 'h1',   style: S.h1 }, 'Terms of Service'),
       h('div', { key: 'meta', style: S.sectionMeta },
-        'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION + ' · Supersedes all prior versions.'
+        'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION
+      ),
+      h('div', { key: 'sum', style: S.summaryBox },
+        h('strong', null, 'In plain language: '),
+        'these terms govern who can buy property records, what they can use them for, and what happens if they break the rules.'
       ),
       h('p', { key: 'pre' },
-        'These Terms of Service (the “Terms”) govern access to and use of the data processing, ',
-        'aggregation, licensing, and research services provided by Falconia (the “Services”). ',
-        'By accessing the Services, by entering into a written data licensing agreement with Falconia, ',
-        'or by receiving any Property Record (as defined in §1.3), the recipient (the “Buyer”) ',
-        'agrees to be bound by these Terms together with the ', h('a', { href: '#privacy' }, 'Privacy Policy'),
-        ' and ', h('a', { href: '#data-processing' }, 'Data Processing'),
-        ' description published on this site, each of which is incorporated herein by reference.'
+        'These Terms govern the data processing, licensing, and research services provided by Falconia. ',
+        'By accessing the Services or receiving any Property Record, the Buyer agrees to these Terms, the ',
+        h('a', { href: '#privacy' }, 'Privacy Policy'), ', and the ',
+        h('a', { href: '#data-processing' }, 'Data Processing'),
+        ' description published on this Site.'
       ),
       Toc('Table of Contents', toc),
 
@@ -322,14 +358,66 @@
 
       // 2. DATA PROCESSING SERVICES
       h('h2', { key: 'h-2', id: 'tos-2', style: S.h2 }, '2. Data Processing Services'),
-      Clause('2.1', 'Falconia operates as an independent data processor and research service provider. Falconia receives Source Material from AQ, transforms such Source Material into structured Property Records, classifies Property Records into the Identified Tier or the De-identified Tier as defined in §§1.4 and 1.5, and licenses the resulting data products to qualified Buyers under written agreement.'),
+      Clause('2.1', 'Falconia receives property photos and observations from AQ, converts them into structured condition reports (Property Records), classifies them into the Identified Tier or the De-identified Tier as defined in §§1.4 and 1.5, and licenses the resulting reports to qualified Buyers under written agreement.'),
       Clause('2.2', 'Falconia does not solicit, capture, or record primary Consent directly from Owners. All Consent is obtained by AQ at the AQ booking flow in accordance with PIPEDA Principle 3 (Consent), and is incorporated by reference into AQ’s service contract with the Owner. The AQ booking flow expressly references Falconia by name and directs the Owner to this Site for the explicit disclosure layer described in the Privacy Policy and Data Processing sections.'),
-      Clause('2.3', 'Falconia does not perform any in-person services at any Subject Property. Falconia does not contact Owners. Falconia does not maintain any consumer-facing booking, contact, or lead-capture facility. The Site does not contain a contact form or commercial call to action, by design and as a matter of policy.'),
+      Clause('2.3', 'Falconia does not perform in-person services or contact property owners directly. All owner interaction occurs through AQ. This site serves as a disclosure and reference resource and does not contain a booking flow, contact form, or commercial call to action.'),
       Clause('2.4', 'Falconia’s processing activities are limited to: (a) ingestion and quality control of Source Material delivered by AQ; (b) extraction of the datapoints enumerated in §§5 and §6 of the Data Processing description; (c) Tier classification; (d) de-identification at FSA resolution where applicable; (e) packaging, licensing, and delivery to Buyers; and (f) audit, retention, and lifecycle management of Property Records.'),
       h('div', { key: 'cr-2', style: S.crossref }, 'See also: Data Processing §3 (Data Flow); Privacy Policy §2 (Sources of Information).'),
 
       // 3. DATA PRODUCT TIERS
       h('h2', { key: 'h-3', id: 'tos-3', style: S.h2 }, '3. Data Product Tiers'),
+      h('div', { key: 'tiers', style: S.tierCardWrap, className: 'fal-tier-wrap' },
+        h('div', { style: S.tierCard },
+          h('div', { style: S.tierCardHead }, 'Identified Tier'),
+          h('div', { style: S.tierCardBody },
+            h('div', { style: S.tierRow },
+              h('span', { style: S.tierLabel }, 'Contains'),
+              h('span', { style: S.tierValue }, 'Full civic address + Property Record')
+            ),
+            h('div', { style: S.tierRow },
+              h('span', { style: S.tierLabel }, 'Buyer must'),
+              h('span', { style: S.tierValue }, 'Execute written agreement; acknowledge No-Outreach in writing')
+            ),
+            h('div', { style: S.tierRow },
+              h('span', { style: S.tierLabel }, 'No-Outreach'),
+              h('span', { style: S.tierValue }, 'Yes — binding (§5)')
+            ),
+            h('div', { style: S.tierRow },
+              h('span', { style: S.tierLabel }, 'Re-identification'),
+              h('span', { style: S.tierValue }, 'N/A')
+            ),
+            h('div', { style: Object.assign({}, S.tierRow, { borderBottom: 'none' }) },
+              h('span', { style: S.tierLabel }, 'Pricing'),
+              h('span', { style: S.tierValue }, 'Per agreement')
+            )
+          )
+        ),
+        h('div', { style: S.tierCard },
+          h('div', { style: S.tierCardHead }, 'De-identified Tier'),
+          h('div', { style: S.tierCardBody },
+            h('div', { style: S.tierRow },
+              h('span', { style: S.tierLabel }, 'Contains'),
+              h('span', { style: S.tierValue }, 'FSA-aggregated statistics')
+            ),
+            h('div', { style: S.tierRow },
+              h('span', { style: S.tierLabel }, 'Buyer must'),
+              h('span', { style: S.tierValue }, 'Execute written agreement')
+            ),
+            h('div', { style: S.tierRow },
+              h('span', { style: S.tierLabel }, 'No-Outreach'),
+              h('span', { style: S.tierValue }, 'Not applicable (non-identifying)')
+            ),
+            h('div', { style: S.tierRow },
+              h('span', { style: S.tierLabel }, 'Re-identification'),
+              h('span', { style: S.tierValue }, 'Prohibited (§3.3)')
+            ),
+            h('div', { style: Object.assign({}, S.tierRow, { borderBottom: 'none' }) },
+              h('span', { style: S.tierLabel }, 'Pricing'),
+              h('span', { style: S.tierValue }, 'Per agreement')
+            )
+          )
+        )
+      ),
       Clause('3.1', 'Identified Tier. The Identified Tier comprises the full civic address of a Subject Property paired with the complete Property Record. Identified Tier records are licensed only to Buyers that have (i) executed a written licensing agreement incorporating these Terms by reference, (ii) acknowledged in writing the No-Outreach Clause set out in §5, and (iii) demonstrated to Falconia’s reasonable satisfaction a legitimate business purpose falling within §4.'),
       Clause('3.2', 'De-identified Tier. The De-identified Tier comprises Property Record statistics aggregated to no finer than the FSA level, from which no individual Owner or Subject Property may reasonably be re-identified by reference to the licensed data alone or in combination with other information reasonably available to the Buyer. The De-identified Tier may be licensed for zone-level analytic, research, and planning purposes without the No-Outreach Clause attaching, on the basis that no individual is identifiable.'),
       Clause('3.3', 'Tier Classification. Falconia classifies each Property Record into a Tier prior to licensing. Buyers may not, by combination, enrichment, joining, inference, or any other technical or analytic means, attempt to convert De-identified Tier records into Identified Tier records, nor attempt to re-identify any Owner or Subject Property. Any such attempt shall constitute a material breach of these Terms.'),
@@ -352,9 +440,9 @@
       // 5. NO-OUTREACH CLAUSE
       h('h2', { key: 'h-5', id: 'tos-5', style: S.h2 }, '5. No-Outreach Clause'),
       h('div', { key: 'co-5', style: S.callout },
-        'The No-Outreach Clause is the central contractual safeguard distinguishing Falconia from a marketing data broker. ',
-        'Buyers of Identified Tier records are categorically prohibited from initiating commercial outreach to any Owner ',
-        'on the basis of, or in any manner informed by, the Property Record.'
+        'Buyers cannot use property records to contact homeowners. ',
+        'This is the core rule that separates Falconia from marketing data brokers — no door knocking, no direct mail, ',
+        'no targeted ads, no contact of any kind based on a property record.'
       ),
       Clause('5.1', 'No Buyer shall, on the basis of any Identified Tier record or any inference derived therefrom, initiate any unsolicited commercial communication with any Owner, including without limitation: door-to-door canvassing, direct mail, telephone calls, text messages, e-mail, instant messaging, addressed advertising, programmatic advertising keyed to the Owner’s address, or any equivalent form of solicitation.'),
       Clause('5.2', 'The prohibition in §5.1 applies to the Buyer, to all employees, contractors, agents, affiliates, and successors of the Buyer, and to any third party to whom the Buyer has, in breach of §4.1(b), disclosed any Identified Tier record or derivative thereof.'),
@@ -421,26 +509,25 @@
     ];
 
     return Section({ id: 'privacy', alt: true }, [
-      h('div', { key: 'eb',   style: S.sectionEyebrow }, 'Document II'),
       h('h1', { key: 'h1',    style: S.h1 }, 'Privacy Policy'),
       h('div', { key: 'meta', style: S.sectionMeta },
-        'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION + ' · Issued under PIPEDA Principle 8 (Openness).'
+        'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION
+      ),
+      h('div', { key: 'sum', style: S.summaryBox },
+        h('strong', null, 'In plain language: '),
+        'this policy explains what Falconia handles, where it comes from, who sees it, and how homeowners can opt out.'
       ),
       h('p', { key: 'pre' },
-        'This Privacy Policy describes the categories of personal information processed by Falconia, the sources from which ',
-        'such information is obtained, the purposes for which it is processed, the parties to whom it may be disclosed, ',
-        'and the rights available to Owners under the ',
-        h('em', null, 'Personal Information Protection and Electronic Documents Act'),
-        ', S.C. 2000, c. 5 (“PIPEDA”). It is published in furtherance of the openness obligation set out at PIPEDA Schedule 1, Principle 8, ',
-        'and is to be read together with the ', h('a', { href: '#terms' }, 'Terms of Service'),
-        ' and the ', h('a', { href: '#data-processing' }, 'Data Processing'), ' description.'
+        'This Privacy Policy explains what information Falconia handles, where it comes from, what it is used for, who receives it, and what rights property owners have under PIPEDA. ',
+        'It should be read together with the ', h('a', { href: '#terms' }, 'Terms of Service'),
+        ' and ', h('a', { href: '#data-processing' }, 'Data Processing'), ' description.'
       ),
       Toc('Table of Contents', toc),
 
       // 1. INFORMATION WE PROCESS
       h('h2', { key: 'h-1', id: 'pp-1', style: S.h2 }, '1. Information We Process'),
       Clause('1.1', 'Falconia processes personal information in respect of Subject Properties at which Owners have provided Consent at the AQ booking flow. The personal information processed by Falconia comprises the categories enumerated in §5 below and includes, in respect of the Identified Tier, the civic address of the Subject Property and the structured datapoints derived from the Source Material.'),
-      Clause('1.2', 'Falconia does not process the contents of any communication occurring inside a residential dwelling, the identities of occupants other than the Owner-of-record where applicable, or any biometric, health, financial, or social-insurance information.'),
+      Clause('1.2', 'Falconia does not process anything from inside a home, and does not handle biometric, health, financial, or social insurance information. Only exterior, observable property characteristics are processed.'),
       Clause('1.3', 'Falconia does not deploy cookies, tracking pixels, fingerprinting scripts, or analytics on the Site as of the effective date of this Policy. Should this position change, this Policy will be amended in accordance with §12 below and a cookie notice will be implemented.'),
 
       // 2. SOURCES OF INFORMATION
@@ -512,7 +599,7 @@
           )
         )
       ),
-      Clause('4.1', 'Falconia does not disclose personal information to advertising networks, social media platforms, real-estate listing portals, lead-generation marketplaces, or any other party whose business model involves contacting Owners.'),
+      Clause('4.1', 'Falconia does not share information with advertising networks, social media platforms, real-estate listing sites, lead-generation services, or any party whose business involves contacting property owners.'),
       Clause('4.2', 'Falconia may disclose personal information where required by law, including in response to a court order, subpoena, or lawful request from a Canadian regulatory authority, and in such case shall, where lawful, notify the affected Owner.'),
       h('div', { key: 'cr-4', style: S.crossref }, 'See also: Terms of Service §5 (No-Outreach Clause); Data Processing §7 (Buyer Categories).'),
 
@@ -586,12 +673,20 @@
       // 13. PRIVACY OFFICER
       h('h2', { key: 'h-13', id: 'pp-13', style: S.h2 }, '13. Privacy Officer Contact'),
       Clause('13.1', 'The Privacy Officer designated by Falconia under PIPEDA Principle 1 (Accountability) may be reached at:'),
-      h('p', { key: 'po', style: { background: '#FFFFFF', border: '1px solid ' + COLORS.border, padding: '14px 18px', fontSize: '13px' } },
+      h('p', { key: 'po', style: S.poBlock },
         h('strong', null, 'Privacy Officer, Falconia'), h('br', null),
-        h('a', { href: 'mailto:' + PRIVACY_EMAIL }, PRIVACY_EMAIL), h('br', null),
-        h('span', { style: { color: COLORS.secondary, fontSize: '12px' } }, 'Interim address. May migrate to a falconia.ca address; a notice will be posted to this Site.')
+        h('a', { href: 'mailto:' + PRIVACY_EMAIL }, PRIVACY_EMAIL)
       ),
-      Clause('13.2', 'Owners may also contact the Office of the Privacy Commissioner of Canada at https://www.priv.gc.ca/ or by mail at 30 Victoria Street, Gatineau, Quebec K1A 1H3.')
+      h('p', { key: 'pp-13-2' },
+        h('span', { style: S.clauseNum }, '13.2'),
+        'Owners may also contact the Office of the Privacy Commissioner of Canada at ',
+        h('a', {
+          href: 'https://www.priv.gc.ca/',
+          target: '_blank',
+          rel: 'noopener noreferrer'
+        }, 'https://www.priv.gc.ca/'),
+        ' or by mail at 30 Victoria Street, Gatineau, Quebec K1A 1H3.'
+      )
     ]);
   }
 
@@ -611,65 +706,105 @@
     ];
 
     return Section({ id: 'data-processing' }, [
-      h('div', { key: 'eb',   style: S.sectionEyebrow }, 'Document III'),
       h('h1', { key: 'h1',    style: S.h1 }, 'Data Processing'),
       h('div', { key: 'meta', style: S.sectionMeta },
-        'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION + ' · Operational description for the avoidance of doubt.'
+        'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION
+      ),
+      h('div', { key: 'sum', style: S.summaryBox },
+        h('strong', null, 'In plain language: '),
+        'this document describes exactly what Falconia does with the photos and observations received from AQ — step by step, in order.'
       ),
       h('p', { key: 'pre' },
-        'This document describes, in operational terms, the processing performed by Falconia in respect of Source Material received from AQ. ',
-        'It is published in furtherance of PIPEDA Principle 8 (Openness) and is to be read together with the ',
-        h('a', { href: '#terms' }, 'Terms of Service'), ' and the ',
+        'This document describes the processing Falconia performs on Source Material received from AQ. It supplements the ',
+        h('a', { href: '#terms' }, 'Terms of Service'), ' and ',
         h('a', { href: '#privacy' }, 'Privacy Policy'), '.'
       ),
       Toc('Table of Contents', toc),
 
       // 1. PURPOSE
       h('h2', { key: 'h-1', id: 'dp-1', style: S.h2 }, '1. Purpose of This Document'),
-      Clause('1.1', 'This document exists to provide an exhaustive, plain-language description of the data processing operations performed by Falconia, in the absence of any consumer-facing booking flow at which a more abbreviated disclosure could be made. It is intended to satisfy, at the depth required by the Office of the Privacy Commissioner of Canada’s guidance on meaningful consent, the explicit disclosure layer beneath the Consent obtained at the AQ booking flow.'),
+      Clause('1.1', 'This document describes, in plain language, how Falconia processes property information. Because Falconia has no consumer-facing booking flow, this site serves as the detailed disclosure layer required for meaningful consent under PIPEDA.'),
 
       // 2. ROLE
       h('h2', { key: 'h-2', id: 'dp-2', style: S.h2 }, '2. Role of Falconia'),
-      Clause('2.1', 'Falconia is, in respect of Source Material, a downstream data processor and aggregator. Falconia is not a service provider to any Owner. Falconia is not a marketing organization. Falconia does not contact Owners and does not maintain any consumer-facing channel.'),
+      Clause('2.1', 'Falconia receives Source Material from AQ and processes it into structured Property Records. Falconia is not a service provider to property owners, is not a marketing organization, and does not contact owners directly.'),
       Clause('2.2', 'Falconia is, in respect of Property Records, a data licensor to Buyers. Property Records are licensed under written agreement on the terms set out in the Terms of Service.'),
       Clause('2.3', 'AQ is the service provider to the Owner and the party that captures primary Consent. The legal architecture of Consent flows from the Owner to AQ to Falconia, in that order, with this Site providing the explicit disclosure layer required for the Consent to be informed.'),
 
       // 3. DATA FLOW
       h('h2', { key: 'h-3', id: 'dp-3', style: S.h2 }, '3. Data Flow'),
-      Clause('3.1', 'The end-to-end data flow is described below. Each arrow represents a discrete transfer or transformation; each label identifies the actor responsible.'),
-      h('pre', { key: 'flow', style: S.flow },
-        'OWNER\n' +
-        '  |  Books service via AQ\n' +
-        '  v\n' +
-        'AQ BOOKING FLOW\n' +
-        '  |  Captures express, informed Consent.\n' +
-        '  |  References Falconia by name and links to this Site.\n' +
-        '  v\n' +
-        'AQ SERVICE VISIT (at Subject Property)\n' +
-        '  |  Performs contracted residential service.\n' +
-        '  |  Collects Source Material: thermal drone, ground photography, metadata.\n' +
-        '  v\n' +
-        'TRANSFER TO FALCONIA\n' +
-        '  |  Source Material transmitted to Falconia under written agreement.\n' +
-        '  v\n' +
-        'FALCONIA PROCESSING\n' +
-        '  |  Quality control, datapoint extraction, Property Record creation.\n' +
-        '  v\n' +
-        'TIER CLASSIFICATION\n' +
-        '  |  Identified Tier  -> full address + Property Record\n' +
-        '  |  De-identified Tier -> FSA-aggregated statistics\n' +
-        '  v\n' +
-        'BUYER LICENSING\n' +
-        '  |  Written agreement incorporates these Terms by reference.\n' +
-        '  |  Identified Tier subject to No-Outreach Clause (ToS §5).\n' +
-        '  v\n' +
-        'BUYER USE (Permitted Uses only, ToS §4)\n'
+      Clause('3.1', 'The end-to-end data flow is described below. Each step represents a discrete transfer or transformation; the actor responsible is named in the box.'),
+      h('div', { key: 'flow-wrap', style: S.flowSvgWrap },
+        (function () {
+          var stages = [
+            ['Owner',                'Books service via AQ.'],
+            ['AQ Booking',           'Captures express, informed Consent. References Falconia.'],
+            ['AQ Service Visit',     'Collects Source Material at Subject Property.'],
+            ['Transfer to Falconia', 'Source Material delivered under written agreement.'],
+            ['Falconia Processing',  'Quality control + datapoint extraction → Property Record.'],
+            ['Tier Classification',  'Identified (address + record) or De-identified (FSA-aggregated).'],
+            ['Buyer Licensing',      'Written agreement; No-Outreach Clause attaches to Identified.'],
+            ['Permitted Use',        'Within ToS §4 only. Owner contact prohibited.']
+          ];
+          var BOX_W = 460, BOX_H = 60, BOX_X = 30, GAP = 26;
+          var CENTER_X = BOX_X + BOX_W / 2;
+          var SVG_W = BOX_X * 2 + BOX_W;
+          var SVG_H = stages.length * BOX_H + (stages.length - 1) * GAP + 8;
+          var children = [
+            h('defs', { key: 'defs' },
+              h('marker', {
+                id: 'fal-arrow', viewBox: '0 0 10 10',
+                refX: '8', refY: '5', markerWidth: '7', markerHeight: '7',
+                orient: 'auto-start-reverse'
+              }, h('path', { d: 'M 0 0 L 10 5 L 0 10 z', fill: COLORS.accent }))
+            )
+          ];
+          stages.forEach(function (s, i) {
+            var y = 4 + i * (BOX_H + GAP);
+            var isHighlight = (s[0] === 'Tier Classification' || s[0] === 'Buyer Licensing');
+            children.push(h('rect', {
+              key: 'b' + i, x: BOX_X, y: y, width: BOX_W, height: BOX_H,
+              rx: 4, ry: 4,
+              fill: COLORS.background,
+              stroke: isHighlight ? COLORS.accent : COLORS.headerBorder,
+              strokeWidth: isHighlight ? 1.75 : 1.25
+            }));
+            children.push(h('text', {
+              key: 't' + i, x: CENTER_X, y: y + 24,
+              textAnchor: 'middle', fontSize: '13.5', fontWeight: '700',
+              fill: COLORS.primary,
+              style: { fontFamily: 'Inter, sans-serif' }
+            }, s[0]));
+            children.push(h('text', {
+              key: 's' + i, x: CENTER_X, y: y + 44,
+              textAnchor: 'middle', fontSize: '11', fill: COLORS.secondary,
+              style: { fontFamily: 'Inter, sans-serif' }
+            }, s[1]));
+            if (i < stages.length - 1) {
+              var ay1 = y + BOX_H + 2;
+              var ay2 = y + BOX_H + GAP - 2;
+              children.push(h('line', {
+                key: 'a' + i, x1: CENTER_X, y1: ay1, x2: CENTER_X, y2: ay2,
+                stroke: COLORS.accent, strokeWidth: 1.5,
+                markerEnd: 'url(#fal-arrow)'
+              }));
+            }
+          });
+          return h('svg', {
+            viewBox: '0 0 ' + SVG_W + ' ' + SVG_H,
+            xmlns: 'http://www.w3.org/2000/svg',
+            role: 'img',
+            'aria-label': 'Data flow from Owner to Buyer Use',
+            className: 'fal-flow-svg',
+            style: { width: '100%', maxWidth: SVG_W + 'px', display: 'block', margin: '0 auto', height: 'auto' }
+          }, children);
+        })()
       ),
 
       // 4. COLLECTION METHODOLOGY
       h('h2', { key: 'h-4', id: 'dp-4', style: S.h2 }, '4. Collection Methodology'),
       Clause('4.1', 'Source Material is captured by AQ during a service visit. Thermal recordings of the building envelope are captured by drone operating in accordance with Transport Canada regulations and within the airspace immediately above and adjacent to the Subject Property. Visible-spectrum imagery is captured by drone or hand-held camera at ground level. Contemporaneous metadata, including date, time, weather, and equipment identifiers, is recorded automatically.'),
-      Clause('4.2', 'Drone operations are conducted with reasonable measures to limit incidental capture of neighbouring properties. Where incidental capture occurs, such material is excluded from the Property Record and is not licensed.'),
+      Clause('4.2', 'Drone flights are planned to avoid capturing neighbouring properties. If a neighbouring property is incidentally captured, that material is excluded from the Property Record and is never licensed.'),
       Clause('4.3', 'No audio recording is performed. No interior imagery is captured.'),
 
       // 5. DATAPOINT ENUMERATION
@@ -739,33 +874,56 @@
     ]);
   }
 
+  // ----- Changelog -----
+  function ChangelogSection() {
+    var entries = [
+      ['2026.05.01', 'May 1, 2026', 'Initial publication of Terms of Service, Privacy Policy, and Data Processing description.']
+    ];
+    return Section({ id: 'changelog', alt: true }, [
+      h('h2', { key: 'h', style: S.h2, id: 'changelog-h' }, 'Revision History'),
+      h('p', { key: 'i' },
+        'Each material change to the Terms, Privacy Policy, or Data Processing description is recorded below with its effective date and a short note. The current version appears in the header and footer of every section.'
+      ),
+      h('ul', { key: 'l', style: S.changelogList },
+        entries.map(function (e, i) {
+          return h('li', { key: i, style: S.changelogItem },
+            h('span', { style: S.changelogVer }, 'v' + e[0]),
+            h('span', { style: S.changelogDate }, e[1]),
+            h('span', null, e[2])
+          );
+        })
+      )
+    ]);
+  }
+
   // ----- Footer -----
   function Footer() {
     return h('footer', { style: S.footer, className: 'fal-no-print' },
       h('div', { style: S.footerInner, className: 'fal-footer-inner' },
         h('div', { style: S.footerRow },
           h('div', { style: S.footerCol },
-            h('div', { style: S.footerHead }, 'Falconia'),
+            h('div', { style: S.footerHead }, 'Entity'),
             'Federal Corporation — Canada', h('br', null),
             'Operations: Manitoba', h('br', null),
             'Governing Law: Manitoba'
           ),
           h('div', { style: S.footerCol },
             h('div', { style: S.footerHead }, 'Documents'),
-            h('a', { href: '#terms', style: S.footerLink }, 'Terms of Service'), h('br', null),
-            h('a', { href: '#privacy', style: S.footerLink }, 'Privacy Policy'), h('br', null),
-            h('a', { href: '#data-processing', style: S.footerLink }, 'Data Processing')
+            h('a', { href: '#terms', style: S.footerLink, className: 'fal-footer-link' }, 'Terms of Service'), h('br', null),
+            h('a', { href: '#privacy', style: S.footerLink, className: 'fal-footer-link' }, 'Privacy Policy'), h('br', null),
+            h('a', { href: '#data-processing', style: S.footerLink, className: 'fal-footer-link' }, 'Data Processing')
           ),
           h('div', { style: S.footerCol },
             h('div', { style: S.footerHead }, 'Privacy Officer'),
-            h('a', { href: 'mailto:' + PRIVACY_EMAIL, style: S.footerLink }, PRIVACY_EMAIL), h('br', null),
-            h('span', { style: { color: COLORS.headerFaint } }, 'Interim contact address')
+            h('div', { style: S.privacyFooterCard },
+              h('a', { href: 'mailto:' + PRIVACY_EMAIL, style: S.privacyFooterEmail, className: 'fal-footer-link' }, PRIVACY_EMAIL),
+              h('a', { href: 'mailto:' + PRIVACY_EMAIL, style: S.privacyFooterBtn, className: 'fal-privacy-btn' }, 'Contact →')
+            )
           )
         ),
         h('div', { style: S.footerFine },
           '© 2026 Falconia. All rights reserved. · ',
-          'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION + '. ',
-          'PIPEDA-compliant disclosure layer. No analytics, no cookies, no consumer-facing channel.'
+          'Effective ' + EFFECTIVE_DATE + ' · Version ' + VERSION + '.'
         )
       )
     );
@@ -776,9 +934,10 @@
     return h(React.Fragment, null,
       h(Header),
       h(Hero),
-      h(TermsSection),
-      h(PrivacySection),
       h(DataProcessingSection),
+      h(PrivacySection),
+      h(TermsSection),
+      h(ChangelogSection),
       h(Footer)
     );
   }
